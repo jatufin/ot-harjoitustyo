@@ -2,6 +2,7 @@
 ## 2021, periodi II
 
 Opiskelija: *Janne Tuukkanen*
+
 Koulutusohjelma: Tietojenkäsittelytieteen kandidaatti
 
 ## Harjoitustyö
