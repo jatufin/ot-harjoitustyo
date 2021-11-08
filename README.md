@@ -1,5 +1,4 @@
-# Ohjelmistotekniikka
-## 2021, periodi II
+# Ohjelmistotekniikka,  2021 periodi II
 
 Opiskelija: *Janne Tuukkanen*
 
