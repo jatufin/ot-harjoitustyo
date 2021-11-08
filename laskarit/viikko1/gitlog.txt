@@ -1,0 +1,103 @@
+commit 28e010ceb684257e76661ac9ac4bf2a94a65b87d
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 11:18:45 2021 +0200
+
+    Fileile
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 0c008dd884db615cc14c48c2e8871e11f5d257eb
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 11:15:11 2021 +0200
+
+    Lisätään fileitä
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6b401cc86edadbd95db52bf035ea76ddc6e44997
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 11:11:20 2021 +0200
+
+    Muutoksia
+
+ eka.txt    | 4 +++-
+ kolmas.txt | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 1d348e19901e62c66a7fbb8454314f5868b0aa28
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 11:06:42 2021 +0200
+
+    Muutetaan tiedosto ekaksi
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 28c5b108120fba463add1663746f52871255e204
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 11:02:16 2021 +0200
+
+    Poistetaan toinen
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 8efc2f3239ef1cd35ca2bd52ccf8606590587efd
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:59:29 2021 +0200
+
+    Muutetaan tekstiä
+
+ tiedosto.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit ffb463008fc086193de1917e04bcaa7d440924b1
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:58:31 2021 +0200
+
+    Lisätään tekstiä
+
+ tiedosto.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 62c3f01cf046d524edd7b69bb0dafba74ab5aaf6
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:49:54 2021 +0200
+
+    Luotiin stuffia
+
+ stuff/stuffa.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 8b1076e9c10f89b2adea15c5ec000a110e9b938e
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:48:57 2021 +0200
+
+    Luotiin kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4ebef2346e0f7192236ae5226581810e937f6854
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:47:20 2021 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit c6d551ecdcb5b2d72b5ec86e679548f0d1ccf883
+Author: Janne Tuukkanen <jatufin@gmail.com>
+Date:   Mon Nov 8 10:45:09 2021 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
