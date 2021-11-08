@@ -5,7 +5,7 @@ Opiskelija: *Janne Tuukkanen*
 Koulutusohjelma: Tietojenkäsittelytieteen kandidaatti
 
 ## Harjoitustyö
-Harjoitustyön aiheena on Python-kielellä toteutettu **Turingin kone** -simulaattori. Käyttöliittymä toteutetaan TkInter-kirjastoilla.
+Harjoitustyön aiheena on Python-kielellä toteutettu **Turingin kone** -simulaattori. Graafinen käyttöliittymä toteutetaan TkInter-kirjastolla.
 
 ### Viikko 1
 [gitlog.txt](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
