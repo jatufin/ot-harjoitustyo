@@ -17,7 +17,7 @@ Kyseessä on yhden käyttäjän työpöytäsovellus, jonka voi asentaa ja suorit
 
 Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta asetusikkunasta. Toteutus tehdään Pythonin omalla TkInter-kirjastolla, mutta tilasiirtymäkaavion esityksessä voidaan käyttää kolmannen osapuolen graafi-kirjastoja.
 
-![Käyttöliittymäluonnos](jaturing_gui.png)
+![Käyttöliittymäluonnos](jaturing_gui_draft.png)
 
 ### Komentorivikäyttöliittymä
 
