@@ -19,6 +19,11 @@ Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta aset
 
 ![Käyttöliittymäluonnos](jaturing_gui_draft.png)
 
+1. Nauha, jonka alapuolella luku- ja kirjoituspää
+2. Käyttäjän muokattavissa olevat tilasiirtymät
+3. Graafinen esitys tilasiirtymistä
+4. Ohjauspainikkeet
+
 ### Komentorivikäyttöliittymä
 
 ```$ python3 jaturing machinefile.tur [inputstring | -i inputfile.tape] [--verbose | -v]```
