@@ -13,5 +13,8 @@ Harjoitustyön aiheena on Python-kielellä toteutettu **Turingin kone** -simulaa
 [komentorivi.txt](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
 ### Viikko 2
-[testauskattavuus](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko2/coverage_report.png)
+[Laskuharjoitus: testauskattavuus](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko2/coverage_report.png)
+
 [Työaikakirjaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko2/tuntikirjanpito.md)
+
+[Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko2/vaatimusmaarittely.md)
