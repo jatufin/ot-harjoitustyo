@@ -2,7 +2,7 @@
 
 **Python-kielellä toteutettu Turingin kone -simulaattori**
 
-Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, ja simuloimaan niiden toimintaa. Sovellus on toteutettu Helsingin yliopiston Tietojenkäsittelytieteen kurssin Ohjelmistotuotanto harjoitustyönä.
+Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, ja simuloimaan niiden toimintaa. Sovellus on toteutettu Helsingin yliopiston Tietojenkäsittelytieteen kurssin Ohjelmistotekniikka harjoitustyönä.
 
 ### Projektin tila
 * Turingin koneen pääluokat metodeineen ovat lähes valmiit
