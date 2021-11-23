@@ -1,12 +1,22 @@
 import array as arr
 
+_ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+
+
 class Tape:
-    def __init__(self, negative_index_allowed=False):
+    def __init__(self, alphabet="", init_string="", negative_index_allowed=False):
         self._EMPTY = ord('.')
+        if alphabet == "":
+            self._alphabet = _ALPHABET
         self._negative_index_allowed = negative_index_allowed
+        self._alphabet = alphabet
         if negative_index_allowed:
             self._left_tape = arr.array('B', [self._EMPTY])
-        self._right_tape = arr.array('B', [self._EMPTY])
+        if init_string == "":
+            init_list = [self._EMPTY]
+        else:
+            init_list = list(map(ord, init_string))
+        self._right_tape = arr.array('B', init_list)
         self._head_position=0
 
     def read(self):
@@ -26,15 +36,23 @@ class Tape:
             self._right_tape[self._head_position] = ord(character)
 
     def _is_in_alphabet(self, character):
-        return character in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        return character in self._alphabet
+
+    def _str_in_alphabet(self, str):
+        for c in str:
+            if not self._is_in_alphabet(c):
+                return False
+        return True
     
     def move_left(self):
+        ''' Returns false, if movement to left from 0 is not allowed '''
         if self._head_position == 0 and self._negative_index_allowed == False:
             return False
         if self._head_position < 1:
             if len(self._left_tape) == abs(self._head_position) - 1:
-                _left_tape.append(self._EMPTY)
+                self._left_tape.append(self._EMPTY)
         self._head_position -= 1
+
         return True
 
     def move_right(self):
@@ -47,10 +65,11 @@ class Tape:
         return_string = ""
         if self._negative_index_allowed:
             for i in range(len(self._left_tape) - 1, -1, -1):
-                if self._head_position < 0 and abs(self._head_position) == i - 1:
+                print("I:"+str(i))
+                if self._head_position < 0 and abs(self._head_position) - 1 == i:
                     return_string += '>'
-                    s += chr(self._left_tape[i])
-            return_string += '|'                   ## midpoint, or 0's cell on tape
+                    return_string += chr(self._left_tape[i])
+        return_string += '|'                   ## midpoint, or 0's cell on tape
             
         for i in range(0, len(self._right_tape)):
             if self._head_position == i:
@@ -59,17 +78,90 @@ class Tape:
 
         return return_string.strip(chr(self._EMPTY)) ## Strip empty cells
 
-class Jaturing:
-    def __init__():
-        pass
+class Rule:
+    def __init__(self, next_state=None, direction=None, write_char=None):
+        self._next_state = next_state
+        self._direction = direction
+        self._write_char = write_char
+        
+    @property
+    def next_state(self):
+        return self._next_state
 
+    @next_state.setter
+    def set_next_state(self, state):
+        self._next_state = state
+        
+    @property
+    def direction(self, direction):
+        ''' LEFT, RIGHT or STAY '''
+        return self._direction
+
+    @direction.setter
+    def set_move_to(self, direction):
+        self._direction = direction
+
+    @property
+    def write_char(self):
+        return self._write_char
+
+    @write_char.setter
+    def set_write_char(self, write_char):
+        self._write_char = write_char
+    
+    def print_rule(self):
+        print(f"  Write '{self.write_char}', move tape {self.direction} and change state to '{self.next_state}'")
+
+    def __str__(self):
+        return f"{self.write_char};{self.direction};{self.next_state}"
+
+
+class State:        
+    def set_rule(self, character, next_state, direction, write_char):
+        self._rules[character] = Rule(next_state, direction, write_char)
+
+    @property
+    def rules(self):
+        return self._rules
+        
+class Jaturing:
+    def __init__(self):
+        self._alphabet = _ALPHABET
+        self._tape = Tape(self._alphabet)
+        self._states = {}
+        self._current_state = None
+        self._accept_state = None
+        self._reject_state = None
+
+    def add_state(self, name):
+        self._states[name] = State()
+
+    def get_state(self, name):
+        return self._states[name]
+
+    def set_rule(self, state_name, character, next_state, direction, write_char):
+        if not get_state(state_name):
+            self.add_state(state_name)
+        self.get_state(state_name).set_rule(character, next_state, direction, write_char)
+
+    def print_states_and_rules(self):
+        print("STATUS")
+        print(f"Tape: {str(self._tape)}")
+        print(f"Current state: {self._current_state}")
+        print(f"Accept state: {self._accept_state}")
+        print(f"Reject state: {self._reject_state}")
+        print("States and rules:")
+        if len(self._states) == 0:
+            print("  << no states >>")
+        for name, state in self._states.items():
+            print(f"State: {name}")
+            for character, rule in self.get_state(name).rules:
+                print(f"'{character}' : ", end='')
+                rule.print_rule()
+        
+            
 def main():
-    tape = Tape()
-    print("1:"+str(tape))
-    tape.write('a')
-    print("2:"+str(tape))
-    tape.move_right()
-    tape.write('a')
-    print("3:"+str(tape))
+    jaturing = Jaturing()
+    jaturing.print_states_and_rules()
 
 if __name__ == "__main__": main()
