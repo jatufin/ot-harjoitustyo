@@ -3,5 +3,7 @@
 .\#*
 .pytest_cache
 __pycache__
-/laskarit/viikko2/unicafe/.coverage
-/laskarit/viikko2/unicafe/htmlcov
+.coverage
+htmlcov
+*.py[cod]
+*$py.class
