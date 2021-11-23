@@ -1,0 +1,66 @@
+# https://www.websequencediagrams.com/
+
+main->+HKLLaitehallinto:HKLLaitehallinto()
+HKLLaitehallinto->*+laitehallinto:<<createRequest>>
+laitehallinto-->-HKLLaitehallinto:<<RequestCreated>>
+HKLLaitehallinto-->-main:laitehallinto
+
+main->+Lataajalaite:Lataajalaite()
+Lataajalaite->*+rautatietori:<<createRequest>>
+rautatietori-->-Lataajalaite:<<RequestCreated>>
+Lataajalaite-->-main:rautatietori
+
+main->+Lukijalaite:Lukijalaite()
+Lukijalaite->*+ratikka6:<<createRequest>>
+ratikka6-->-Lukijalaite:<<RequestCreated>>
+Lukijalaite-->-main:ratikka6
+
+main->+Lukijalaite:Lukijalaite()
+Lukijalaite->*+bussi244:<<createRequest>>
+bussi244-->-Lukijalaite:<<RequestCreated>>
+Lukijalaite-->-main:bussi244
+
+main->+laitehallinto:lisaa_lataaja(rautatietori)
+laitehallinto->+_lataajat:append(rautatientori)
+_lataajat-->-laitehallinto:None
+laitehallinto-->-main:None
+
+main->+laitehallinto:lisaa_lukija(ratikka6)
+laitehallinto->+_lukijat:append(ratikka6)
+_lukijat-->-laitehallinto:None
+laitehallinto-->-main:None
+
+main->+laitehallinto:lisaa_lukija(bussi244)
+laitehallinto->+_lukijat:append(bussi244)
+_lukijat-->-laitehallinto:None
+laitehallinto-->-main:None
+
+main->+Kioski:Kioski()
+Kioski->*+lippu_luukku:<<createRequest>>
+lippu_luukku-->-Kioski:<<RequestCreated>>
+Kioski-->-main:lippu_luukku
+
+main->+lippu_luukku:osta_matkakortti("Kalle")
+lippu_luukku->+Matkakortti:Matkakortti("Kalle")
+Matkakortti->*+kallen_kortti:<<createRequest>>
+##
+kallen_kortti-->-Matkakortti:<<requestCreated>>
+Matkakortti-->-lippu_luukku:kallen_kortti
+lippu_luukku-->-main:kallen_kortti
+
+main->+rautatietori:lataa_arvoa(kallen_kortti, 3)
+rautatietori->+kallen_kortti:kasvata_arvoa(3)
+kallen_kortti-->-rautatietori:None
+rautatietori-->-main:None
+
+main->+ratikka6:osta_lippu(kallen_kortti, 0)
+ratikka6->+kallen_kortti: arvo <<requestValue>>
+kallen_kortti-->-ratikka6:3
+ratikka6->+kallen_kortti: vahenna_arvoa(1.5)
+kallen_kortti-->-ratikka6:None
+ratikka6->-main:True
+
+main->+bussi244:osta_lippu(kallen_kortti, 2)
+bussi244->+kallen_kortti: arvo <<requestValue>>
+kallen_kortti-->-bussi244:1.5
+bussi244->-main:False

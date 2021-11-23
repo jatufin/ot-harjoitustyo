@@ -1,0 +1,16 @@
+# https://www.websequencediagrams.com/
+#
+title Machine creation and drive() call
+
+# Alice->Bob: Authentication Request
+# note right of Bob: Bob thinks about it
+# Bob->Alice: Authentication Response
+
+actor main
+main->+Machine: Machine()
+Machine->*+machine: <<createRequest>>
+machine-->-Machine: <<RequestCreated>>
+Machine-->-main:machine
+
+main->+machine: drive()
+machine-->-main: None
