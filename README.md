@@ -1,24 +1,39 @@
-# Ohjelmistotekniikka,  2021 periodi II
+# Jaturing
 
-Opiskelija: *Janne Tuukkanen*
+**Python-kielellä toteutettu Turingin kone -simulaattori**
 
-Koulutusohjelma: Tietojenkäsittelytieteen kandidaatti
+Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, ja simuloimaan niiden toimintaa. Sovellus on toteutettu Helsingin yliopiston Tietojenkäsittelytieteen kurssin Ohjelmistotuotanto harjoitustyönä.
 
-## Harjoitustyö
-Harjoitustyön aiheena on Python-kielellä toteutettu **Turingin kone** -simulaattori. Graafinen käyttöliittymä toteutetaan TkInter-kirjastolla.
+### Projektin tila
+* Turingin koneen pääluokat metodeineen ovat lähes valmiit
+* Nauhaa esittävän Tape-luokan osalta on yksikkötestien rakentaminen aloitettu
+* Käyttöliittymää ja tiedostotoimintoja ei ole vielä aloitettu
+* Arkkitehtuurikuvausta ei ole vielä tehty
 
-### Viikko 1
-[gitlog.txt](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
-
-[komentorivi.txt](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
-
-### Viikko 2
-[Laskuharjoitus: testauskattavuus](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko2/coverage_report.png)
-
+### Dokumentaatio
 [Työaikakirjaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 
 [Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
 
-### Viikko 3
-[Laskuharjoitus](https://github.com/jatufin/ot-harjoitustyo/blob/master/laskarit/viikko3/kaaviot.md)
+### Asennus ja käyttö
+
+* Riippuvuuksien asennus:
+```bash
+poetry install
+```
+
+* Ohjelman käynnistys
+```bash
+poetry run invoke start
+```
+
+* Testaus
+```bash
+poetry run invoke test
+```
+
+* Testikattavuus
+```bash
+poetry run invoke coverage-report
+```
