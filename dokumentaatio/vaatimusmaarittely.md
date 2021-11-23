@@ -44,7 +44,7 @@ Tilan tulostus on muodossa ```m: s1s2s3>s4...sN (D s Q)```, jossa:
 
 Perusversio tarjoaa yksinauhaisen Turing-koneen simulaattorin, joka konfiguroidaan tekstimuotoisesti.
 * Aakkosto sisältää merkit ```[0-9][a-z][A-Z][#]```
-* Nauha-aakkosto sisältää lisäksi tyhjä-merkin, jonka esitysmuotona tulostettaessa on piste: ```.```
+* Nauha-aakkosto sisältää lisäksi tyhjä-merkin, jonka esitysmuotona on piste: ```.```
 
 ### Asetukset
 Asetuksista voidaan valita:
