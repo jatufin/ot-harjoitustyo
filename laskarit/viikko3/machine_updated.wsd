@@ -1,0 +1,38 @@
+# https://www.websequencediagrams.com/
+#
+title Machine creation and drive() call
+
+actor main
+main->+Machine: Machine()
+Machine->*+machine:<<createRequest>>
+machine->+FuelTank:FuelTank()
+FuelTank->*+_tank:<<createRequest>>
+_tank-->-FuelTank:<<RequestCreated>>
+FuelTank-->-machine:_tank
+machine->+_tank:fill(40)
+_tank-->-machine:None
+machine->+Engine:Engine(_tank)
+Engine->*+_engine:<<createRequest>>
+_engine-->-Engine:<<RequestCreated>>
+Engine-->-machine:_engine
+machine-->-Machine: <<RequestCreated>>
+Machine-->-main:machine
+
+main->+machine: drive()
+
+machine->+_engine:start()
+_engine->+_tank:consume(5)
+_tank-->-_engine:None
+_engine-->-machine:None
+
+machine->+_engine:is_running()
+_engine->+_tank:fuel_contents <<requestValue>>
+_tank-->-_engine:35
+_engine-->-machine:running = True
+
+machine->+_engine:use_energy()
+_engine->+_tank:consume(10)
+_tank-->-_engine:None
+_engine-->-machine:None
+
+machine-->-main: None
