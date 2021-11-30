@@ -165,8 +165,8 @@ class Rule:
     def write_char(self, write_char):
         self._write_char = write_char
     
-    # def print_rule(self):
-    #     print(f"  Write '{self.write_char}', move tape {self.direction} and change state to '{self.next_state}'")
+    def print_rule(self):
+        print(f"  Write '{self.write_char}', move tape {self.direction} and change state to '{self.next_state}'")
 
     def __str__(self):
         return f"{self.write_char};{self.direction};{self.next_state}"
@@ -180,7 +180,7 @@ class State:
         self._rules = {}
         
     def set_rule(self, character, write_char, direction, next_state):
-        self._rules[character] = Rule(next_state, direction, write_char)
+        self._rules[character] = Rule(write_char, direction, next_state)
 
     def get_rule(self, character):
         return self._rules[character]
@@ -223,10 +223,11 @@ class Jaturing:
                  ):
         if not self.get_state(state_name):
             self.add_state(state_name)
-        self.get_state(state_name).set_rule(character,
-                                            next_state,
-                                            direction,
-                                            write_char)
+        self.get_state(state_name).set_rule(character=character,
+                                            write_char=write_char,
+                                            direction=direction,
+                                            next_state=next_state
+                                            )
 
     def is_accept_or_reject(self, state):
         return (state == self._accept_state or
@@ -243,7 +244,7 @@ class Jaturing:
             print("  << no states >>")
         for name, state in self._states.items():
             print(f"State: {name}")
-            for character, rule in self.get_state(name).rules:
+            for character, rule in self.get_state(name).rules.items():
                 print(f"'{character}' : ", end='')
                 rule.print_rule()
         
