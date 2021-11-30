@@ -1,4 +1,5 @@
 import array as arr
+from jaturing_GUI import launch
 
 _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
@@ -69,15 +70,16 @@ class Tape:
                 if self._head_position < 0 and abs(self._head_position) - 1 == i:
                     return_string += '>'
                     return_string += chr(self._left_tape[i])
-        return_string += '|'                   ## midpoint, or 0's cell on tape
+        return_string += '|'                   # midpoint, or 0's cell on tape
             
         for i in range(0, len(self._right_tape)):
             if self._head_position == i:
                 return_string += '>'
             return_string += chr(self._right_tape[i])
 
-        return return_string.strip(chr(self._EMPTY)) ## Strip empty cells
+        return return_string.strip(chr(self._EMPTY))  # Strip empty cells
 
+    
 class Rule:
     def __init__(self, next_state=None, direction=None, write_char=None):
         self._next_state = next_state
@@ -139,10 +141,17 @@ class Jaturing:
     def get_state(self, name):
         return self._states[name]
 
-    def set_rule(self, state_name, character, next_state, direction, write_char):
+    def set_rule(self, state_name,
+                 character,
+                 next_state,
+                 direction,
+                 write_char):
         if not get_state(state_name):
             self.add_state(state_name)
-        self.get_state(state_name).set_rule(character, next_state, direction, write_char)
+        self.get_state(state_name).set_rule(character,
+                                            next_state,
+                                            direction,
+                                            write_char)
 
     def print_states_and_rules(self):
         print("STATUS")
@@ -163,5 +172,8 @@ class Jaturing:
 def main():
     jaturing = Jaturing()
     jaturing.print_states_and_rules()
+    launch(jaturing)
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+    main()
