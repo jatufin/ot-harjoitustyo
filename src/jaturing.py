@@ -135,7 +135,7 @@ class Rule:
     The _next_state property contains rule name as a string,
     which is a key in State._rules. 
     """
-    def __init__(self, next_state=None, direction=None, write_char=None):
+    def __init__(self, write_char=None, direction=None, next_state=None):
         self._next_state = next_state
         self._direction = direction
         self._write_char = write_char
@@ -179,9 +179,12 @@ class State:
     def __init__(self):
         self._rules = {}
         
-    def set_rule(self, character, next_state, direction, write_char):
+    def set_rule(self, character, write_char, direction, next_state):
         self._rules[character] = Rule(next_state, direction, write_char)
 
+    def get_rule(self, character):
+        return self._rules[character]
+    
     @property
     def rules(self):
         return self._rules

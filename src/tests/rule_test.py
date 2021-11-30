@@ -32,4 +32,4 @@ class TestRule(unittest.TestCase):
 
     def test_cast_to_string_works(self):
         rule_as_string = str(self.initialized_rule)
-        self.assertEquals(rule_as_string, "A;RIGHT;q1")
+        self.assertEqual(rule_as_string, "A;RIGHT;q1")
