@@ -1,6 +1,6 @@
 from tkinter import Tk
 from tkinter import ttk
-
+from tkinter import StringVar
 
 class JaturingApp(Tk):
     def __init__(self, machine):
@@ -25,6 +25,8 @@ class JaturingApp(Tk):
         self.style.configure("TButton", background = background_color)
         self.style.configure("TLabel", background = background_color,
                              font = ("Arial",11))
+        self.style.configure("Tape.TLabel", width=3, justify = "center", font = ("Helvetica", 10))
+        self.style.configure("Tape.TEntry", width = 2, justify = "center", font = ("Helvetica", 24))        
         
 class JaturingFrame(ttk.Frame):
     class _Buttons(ttk.Frame):
@@ -52,12 +54,41 @@ class JaturingFrame(ttk.Frame):
             self.step_forward_button.grid(row = 0, column = 3)        
 
     class _Tape(ttk.Frame):
-        def __init__(self, master, root_frame):
+        def __init__(self, master, size, head = 0):
+            """ The shown tape is 2 times length of size, from 0-size to 0+size
+            """
             super().__init__(master)
             self.configure(height = 200)
 
-            ttk.Label(self, text="TAPE HERE!").pack()
+            self.head = head
+            self.size = size
             
+            self.labels = []
+            self.entries = []
+            self.indexes = []
+            self.values = []
+            for i in range(2 * size):
+                index = StringVar()
+                index.set(str(i - size))
+                value = StringVar()
+                value.set(str(i - size))
+                label = ttk.Label(self, style = "Tape.TLabel", textvariable=index)
+                entry = ttk.Entry(self, style = "Tape.TEntry", width = 2, textvariable = value)
+                label.grid(row = 0, column = i)
+                entry.grid(row = 1, column = i)
+
+                self.labels.append(label)
+                self.entries.append(entry)
+                self.indexes.append(index)
+                self.values.append(value)
+                
+        def set(self, tape_slice):
+            self.head = tape.get_head_position
+            i = 0
+            for tape_cell  in tape_slice(self.size):
+                self.indexes[i] = tape_cell[0]
+                self.values[i] = tape_cell[1]
+
     def __init__(self, container):
         super().__init__(container)
 
@@ -76,7 +107,7 @@ class JaturingFrame(ttk.Frame):
         self.frame_bottom.grid(row = 2, column =1, columnspan = 2)
 
         ttk.Label(self.frame_top, text = "Ylä").pack()
-        self.tape = self._Tape(self.frame_top, self)
+        self.tape = self._Tape(self.frame_top, 10)
         self.tape.pack()
         
         ttk.Label(self.frame_left, text = "Vasen").pack()
