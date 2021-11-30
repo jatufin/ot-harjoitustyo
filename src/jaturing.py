@@ -11,7 +11,6 @@ class Tape:
             self._alphabet = _ALPHABET
         else:
             self._alphabet = alphabet
-        print(f"Aakkosto: {self._alphabet}")
         self._negative_index_allowed = negative_index_allowed
 
         if negative_index_allowed:
@@ -70,8 +69,11 @@ class Tape:
 
     def _get_value(self, index):
         if index < 0:
-            tape = self._left_tape
-            index = abs(index) - 1
+            if self._negative_index_allowed:
+                tape = self._left_tape
+                index = abs(index) - 1
+            else:
+                return "."
         else:
             tape = self._right_tape
         if index >= len(tape):
@@ -85,7 +87,8 @@ class Tape:
         """
         return_list = []
         for i in range(self._head_position - length, self._head_position + length):
-            return_list.append((i, self._get_value(i)))
+            value = self._get_value(i)
+            return_list.append((i, value))
             
         return return_list
 
@@ -183,7 +186,14 @@ class State:
         self._rules[character] = Rule(write_char, direction, next_state)
 
     def get_rule(self, character):
+        if not character in self._rules:
+            return None
         return self._rules[character]
+
+    def delete_rule(self, rule):
+        if not rule in self._rules:
+            return
+        self._rules.pop(rule)
     
     @property
     def rules(self):
@@ -195,7 +205,7 @@ class Jaturing:
         self._alphabet = _ALPHABET
         self._tape = Tape(self._alphabet)
         self._states = {}
-        self._current_state = None
+        self.current_state = None
         
         self._accept_state = "ACCEPT"
         self.add_state(self._accept_state)
@@ -206,10 +216,21 @@ class Jaturing:
     @property
     def states(self):
         return self._states
+
+    @property
+    def tape(self):
+        return self._tape
     
     def add_state(self, name):
         self._states[name] = State()
 
+    def delete_state(self, name):
+        if not name in self._states:
+            return None
+        if self.current_state == name:
+            self.current_state = None
+        self.states.pop(name)
+        
     def get_state(self, name):
         if not name in self._states:
             return None
@@ -229,9 +250,35 @@ class Jaturing:
                                             next_state=next_state
                                             )
 
+    def delete_rule(self, state, rule):
+        if not state in self._states:
+            return None
+        self._states[state].delete_rule(rule)
+        
     def is_accept_or_reject(self, state):
         return (state == self._accept_state or
                 state == self._reject_state)
+
+    def step_forward(self):
+        character = self.tape.read()
+        state = self.get_state(self.current_state)
+        rule = state.get_rule(character)
+        print(f"Current state is: {self.current_state}")
+        print(f"From tape was read: {character}")
+        if not rule:
+            print("No rule was found for")
+            return
+        print(f"Write: {rule.write_char}")
+        self.tape.write(rule.write_char)
+        
+        print(f"Move tape: {rule.direction}")
+        if rule.direction == "RIGHT":
+            self.tape.move_right()
+        elif rule.direction == "LEFT":
+            self.tape.move_left()
+            
+        print(f"Change state to: {rule.next_state}")
+        self.current_state = rule.next_state
         
     def print_states_and_rules(self):
         print("STATUS")
@@ -248,10 +295,9 @@ class Jaturing:
                 print(f"'{character}' : ", end='')
                 rule.print_rule()
         
-            
+       
 def main():
     jaturing = Jaturing()
-    jaturing.print_states_and_rules()
     launch(jaturing)
 
 
