@@ -9,8 +9,11 @@ class Tape:
         self._EMPTY = ord('.')
         if alphabet == "":
             self._alphabet = _ALPHABET
+        else:
+            self._alphabet = alphabet
+        print(f"Aakkosto: {self._alphabet}")
         self._negative_index_allowed = negative_index_allowed
-        self._alphabet = alphabet
+
         if negative_index_allowed:
             self._left_tape = arr.array('B', [self._EMPTY])
         if init_string == "":
@@ -20,11 +23,14 @@ class Tape:
         self._right_tape = arr.array('B', init_list)
         self._head_position=0
 
+    def get_head_position(self):
+        return self._head_position
+    
     def read(self):
         if self._head_position < 0:
-            return chr(self._left_tape[abs(head_position)-1])
+            return chr(self._left_tape[abs(self._head_position)-1])
         else:
-            return chr(self._right_tape[head_position])
+            return chr(self._right_tape[self._head_position])
 
     def write(self, character):
         if self._is_in_alphabet(character):
@@ -50,7 +56,7 @@ class Tape:
         if self._head_position == 0 and self._negative_index_allowed == False:
             return False
         if self._head_position < 1:
-            if len(self._left_tape) == abs(self._head_position) - 1:
+            if len(self._left_tape) == abs(self._head_position):
                 self._left_tape.append(self._EMPTY)
         self._head_position -= 1
 
@@ -62,14 +68,57 @@ class Tape:
                 self._right_tape.append(self._EMPTY)
         self._head_position += 1
 
+    def _get_value(self, index):
+        if index < 0:
+            tape = self._left_tape
+            index = abs(index) - 1
+        else:
+            tape = self._right_tape
+        if index >= len(tape):
+            return "."
+        return chr(tape[index])
+            
+        
+    def get_slice(self, length):
+        """ Return a 2*length long slice from the tape from both sides of the head_position
+        each element in the list is a tuple containing index number and value
+        """
+        return_list = []
+        for i in range(self._head_position - length, self._head_position + length):
+            return_list.append((i, self._get_value(i)))
+            
+        return return_list
+
+    def _go_to(self, index):
+        if index < 0 and self._negative_index_allowed == False:
+            return
+        
+        if index == self._head_position:
+            return
+        
+        if index < self._head_position:
+            self.move_left()
+        else:
+            self.move_right()
+        self._go_to(index)        
+            
+    def set_value(self, index, value):
+        if index < 0 and self._negative_index_allowed == False:
+            return
+        
+        head = self._head_position
+        self._go_to(index)
+        self.write(value)
+        self._go_to(head)
+ 
     def __str__(self):
         return_string = ""
         if self._negative_index_allowed:
             for i in range(len(self._left_tape) - 1, -1, -1):
-                print("I:"+str(i))
-                if self._head_position < 0 and abs(self._head_position) - 1 == i:
+                if (self._head_position < 0 and
+                   abs(self._head_position) - 1 == i):
                     return_string += '>'
-                    return_string += chr(self._left_tape[i])
+                return_string += chr(self._left_tape[i])
         return_string += '|'                   # midpoint, or 0's cell on tape
             
         for i in range(0, len(self._right_tape)):
