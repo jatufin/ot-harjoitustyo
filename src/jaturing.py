@@ -130,6 +130,11 @@ class Tape:
 
     
 class Rule:
+    """ State object contains rules for operations, which should
+    be done, when certain character is read from the tape
+    The _next_state property contains rule name as a string,
+    which is a key in State._rules. 
+    """
     def __init__(self, next_state=None, direction=None, write_char=None):
         self._next_state = next_state
         self._direction = direction
@@ -140,16 +145,16 @@ class Rule:
         return self._next_state
 
     @next_state.setter
-    def set_next_state(self, state):
+    def next_state(self, state):
         self._next_state = state
         
     @property
-    def direction(self, direction):
+    def direction(self):
         ''' LEFT, RIGHT or STAY '''
         return self._direction
 
     @direction.setter
-    def set_move_to(self, direction):
+    def direction(self, direction):
         self._direction = direction
 
     @property
@@ -157,23 +162,30 @@ class Rule:
         return self._write_char
 
     @write_char.setter
-    def set_write_char(self, write_char):
+    def write_char(self, write_char):
         self._write_char = write_char
     
-    def print_rule(self):
-        print(f"  Write '{self.write_char}', move tape {self.direction} and change state to '{self.next_state}'")
+    # def print_rule(self):
+    #     print(f"  Write '{self.write_char}', move tape {self.direction} and change state to '{self.next_state}'")
 
     def __str__(self):
         return f"{self.write_char};{self.direction};{self.next_state}"
 
 
-class State:        
+class State:
+    """ State object doesn't know its own name, which is a key
+    Jaturing._states dictionary
+    """
+    def __init__(self):
+        self._rules = {}
+        
     def set_rule(self, character, next_state, direction, write_char):
         self._rules[character] = Rule(next_state, direction, write_char)
 
     @property
     def rules(self):
         return self._rules
+
         
 class Jaturing:
     def __init__(self):
