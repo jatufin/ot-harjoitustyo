@@ -199,18 +199,25 @@ class Jaturing:
         self._accept_state = None
         self._reject_state = None
 
+    @property
+    def states(self):
+        return self._states
+    
     def add_state(self, name):
         self._states[name] = State()
 
     def get_state(self, name):
+        if not name in self._states:
+            return None
         return self._states[name]
 
     def set_rule(self, state_name,
                  character,
-                 next_state,
+                 write_char,
                  direction,
-                 write_char):
-        if not get_state(state_name):
+                 next_state
+                 ):
+        if not self.get_state(state_name):
             self.add_state(state_name)
         self.get_state(state_name).set_rule(character,
                                             next_state,

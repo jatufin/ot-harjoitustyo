@@ -6,7 +6,9 @@ from jaturing import Rule
 class TestRule(unittest.TestCase):
     def setUp(self):
         self.empty_rule = Rule()
-        self.initialized_rule = Rule(next_state="q1", direction = "RIGHT", write_char="A")
+        self.initialized_rule = Rule(next_state="q1",
+                                     direction="RIGHT",
+                                     write_char="A")
         
     def test_empty_rule_is_created_right(self):
         self.assertEqual(self.empty_rule._next_state, None)
