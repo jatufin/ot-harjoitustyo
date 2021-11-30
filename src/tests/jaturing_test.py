@@ -9,12 +9,18 @@ class TestJaturing(unittest.TestCase):
 
     def test_adding_state_adds_state(self):
         self.jaturing.add_state("q1")
-        self.assertEqual(len(self.jaturing.states), 1)
+        self.assertEqual(len(self.jaturing.states), 3)
 
     def test_getting_state_gets_state(self):
         self.jaturing.add_state("q1")
         self.assertIsNotNone(self.jaturing.get_state("q1"))
 
+    def test_default_accept_state_is_recognized(self):
+        self.assertTrue(self.jaturing.is_accept_or_reject("ACCEPT"))
+
+    def test_default_reject_state_is_recognized(self):
+        self.assertTrue(self.jaturing.is_accept_or_reject("REJECT"))
+        
     def test_setting_rule_sets_rule(self):
         self.jaturing.add_state("q1")
         self.jaturing.set_rule(state_name="q1",

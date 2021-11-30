@@ -196,8 +196,12 @@ class Jaturing:
         self._tape = Tape(self._alphabet)
         self._states = {}
         self._current_state = None
-        self._accept_state = None
-        self._reject_state = None
+        
+        self._accept_state = "ACCEPT"
+        self.add_state(self._accept_state)
+        
+        self._reject_state = "REJECT"
+        self.add_state(self._reject_state)
 
     @property
     def states(self):
@@ -224,6 +228,10 @@ class Jaturing:
                                             direction,
                                             write_char)
 
+    def is_accept_or_reject(self, state):
+        return (state == self._accept_state or
+                state == self._reject_state)
+        
     def print_states_and_rules(self):
         print("STATUS")
         print(f"Tape: {str(self._tape)}")
