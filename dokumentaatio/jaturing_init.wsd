@@ -1,0 +1,27 @@
+# https://www.websequencediagrams.com/
+#
+title Jaturing initialization
+
+actor main
+main->+Jaturing: Jaturing()
+Jaturing->*+jaturing:<<createRequest>>
+
+jaturing->+Tape:Tape()
+Tape->*+tape:<<createRequest>>
+tape-->-Tape:<<RequestCreated>>
+Tape-->-jaturing:tape
+
+jaturing->+State:states[ACCEPT] = State()
+State->*+states:<<createRequest>>
+states-->-State:<<RequestCreated>>
+State-->-jaturing:states[ACCEPT]
+
+jaturing->+State:states[REJECT] = State()
+State->*+states:<<createRequest>>
+states-->-State:<<RequestCreated>>
+State-->-jaturing:states[REJECT]
+
+jaturing-->-Jaturing:<<RequestCreated>>
+Jaturing-->-main:jaturing
+
+

@@ -1,0 +1,48 @@
+# https://www.websequencediagrams.com/
+#
+title Perform one automata step
+
+actor main
+main->+jaturing: step_forward()
+
+jaturing->+tape:read()
+tape->tape:head_position >= 0
+tape->+_right_tape:[_head_position] <<requestValue>>
+_right_tape-->-tape:<<RequestedValue>>
+tape-->-jaturing:character
+
+jaturing->+_states:[_current_state] <<requestValue>>
+_states->+state:<<requestValue>>
+state-->-_states:<<RequestedValue>>
+_states-->-jaturing:state
+
+jaturing->+state:state.get_rule(character)
+state->+rule:<<requestValue>>
+rule-->-state:<<RequestedValue>>
+state-->-jaturing:rule
+
+jaturing->+rule:write_char <<requestValue>>
+rule-->-jaturing:<<RequestedValue>>
+
+jaturing->+tape:write(rule.write_char)
+tape->tape:_is_an_alphabet(rule.write_char) == True
+tape->tape:head_position >= 0
+tape->+_right_tape:[_head_position]=rule.write_char <<setValue>>
+_right_tape-->-tape:None
+tape-->-jaturing:None
+
+jaturing->+rule:direction <<RequestValue>>
+rule-->-jaturing:RIGHT
+jaturing->+tape:move_right()
+tape-->-jaturing:None
+
+jaturing->+rule:next_state <<RequestValue>>
+rule-->-jaturing:Q2
+
+jaturing->current_state:Q2 <<setValue>>
+current_state->-jaturing:None
+
+
+
+
+jaturing-->-main: None 
