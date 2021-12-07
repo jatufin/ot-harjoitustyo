@@ -19,10 +19,10 @@ Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta aset
 
 ![Käyttöliittymäluonnos](jaturing_gui_draft.png)
 
-1. Nauha, jonka alapuolella luku- ja kirjoituspää
-2. Käyttäjän muokattavissa olevat tilasiirtymät
+1. Nauha, jonka alapuolella luku- ja kirjoituspää / tehty
+2. Käyttäjän muokattavissa olevat tilasiirtymät / tehty
 3. Graafinen esitys tilasiirtymistä
-4. Ohjauspainikkeet
+4. Ohjauspainikkeet / tehty
 
 ### Komentorivikäyttöliittymä
 
@@ -52,8 +52,8 @@ Asetuksista voidaan valita:
 * Onko käytössä ```S=stay```-operaatio, vai onko lukupäätä pakko liikuttaa
 
 ### Lataus ja tallennus
-* Voidaan tallentaa ja myöhemmin uudelleen ladata luotu Turingin-kone tiedostoon. Tiedostopäätteenä on ```tur```, ja tiedostomuoto UTF-8 -koodattu tekstitiedosto, jonka käsin muokkaaminen on mahdollista
-* Voidaan tallentaa ja myöhemmin uudelleen ladata nauhan tila tiedostoon. Tiedostopäätteenä on ```tape```, ja tiedostomuoto UTF-8 -koodattu tekstitiedosto, jonka käsin muokkaaminen on mahdollista
+* Voidaan tallentaa ja myöhemmin uudelleen ladata luotu Turingin-kone sen hetkisine tiloineen tiedostoon. Tiedostopäätteenä on ```tur```, ja tiedostomuoto JSON-muotoinen tekstitiedosto, jonka käsin muokkaaminen on mahdollista
+
 
 ## Jatkokehitysideoita
 
