@@ -1,5 +1,7 @@
-
 import array as arr
+
+_ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+
 
 class Tape:
     def __init__(self, alphabet="", init_string="", negative_index_allowed=False):
@@ -124,11 +126,16 @@ class Tape:
                 return_string += chr(self._left_tape[i])
         return_string += '|'                   # midpoint, or 0's cell on tape
 
-        # for i in range(0, len(self._right_tape)):
-        for i in enumerate(self._right_tape):
+        for i in range(0, len(self._right_tape)):
             if self._head_position == i:
                 return_string += '>'
             return_string += chr(self._right_tape[i])
 
         return return_string.strip(chr(self._empty))  # Strip empty cells
+
+    def get_dictionary(self):
+        return {"head_position": self._head_position,
+                "negative_index_allowed": self._negative_index_allowed,
+                "left_tape": self._left_tape.tolist() if self._negative_index_allowed else None,
+                "righ_tape": self._right_tape.tolist()}
 

@@ -1,4 +1,4 @@
-
+import json
 
 from ui.jaturing_GUI import launch
 from tape import Tape
@@ -6,7 +6,6 @@ from rule import Rule
 from state import State
 
 _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-
 
 
 class Jaturing:
@@ -103,9 +102,29 @@ class Jaturing:
                 print(f"'{character}' : ", end='')
                 rule.print_rule()
 
+    def exportJSON(self):
+        states_dict = {}
+        for state_name, state in self._states.items():
+            rules = state.get_rules_in_dictionary()
+            states_dict[state_name] = {"rules": rules}
 
-def main():
+        machine = {"alphabet": _ALPHABET,
+                   "accept_state": self._accept_state,
+                   "reject_state": self._reject_state,
+                   "tape": self._tape.get_dictionary(),
+                   "states": states_dict}
+
+        return json.dumps(machine)
+
+
+    def importJSON(self):
+        pass
+    
+def main():    
     jaturing = Jaturing()
+    
+    jaturing.exportJSON()
+    
     launch(jaturing)
 
 

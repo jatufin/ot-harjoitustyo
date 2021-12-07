@@ -13,7 +13,7 @@ class TestState(unittest.TestCase):
     def test_set_and_get_rule_works(self):
         self.state.set_rule("a", "q1", "RIGHT", "B")
         rule = self.state.get_rule("a")
-        self.assertEqual(str(rule), "B;RIGHT;q1")
+        self.assertEqual(str(rule), "q1;RIGHT;B")
 
     def test_rules_returns_all_rules(self):
         self.state.set_rule("a", "q1", "RIGHT", "B")
