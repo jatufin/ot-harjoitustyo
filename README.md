@@ -21,7 +21,7 @@ Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, j
 
 [Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
-
+[Arkkitehtuuri](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 ### Asennus ja käyttö
 
 * Riippuvuuksien asennus:

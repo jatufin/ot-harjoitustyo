@@ -1,0 +1,16 @@
+// yuml.me
+// ------------------
+// Jaturing Turing machine simulator
+
+[Jaturing|-_alphabet;_accept_state;_reject_state;+current_state;+states;+tape|+add_state(name);+delete_state();+get_state();+set_rule();+delete_rule();+is_accept_or_reject();+step_forward();+print_states_and_rules();__init__()]
+
+[Tape|-_empty;-_alphabet;-_negative_index_allowed;-_left_tape;-_right_tape;-_head_position|+get_head_position();-_go_to();-_is_in_alphabet();-_write();-_str_in_alphabet();-_get_value();+read();+write();+move_left();+move_right();+get_slice();+set_value();+__str__();+__init__()]
+
+[State|+rules|+set_rule();+get_rule();+delete_rule();+__init__()]
+
+[Rule|+next_state;+direction;+write_char|+print_rule();+__str__();+__init__()]
+
+
+[Jaturing]<>-1[Tape]
+[Jaturing]<>-*[State]
+[State]<>-*[Rule]
