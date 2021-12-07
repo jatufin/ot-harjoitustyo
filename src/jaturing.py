@@ -1,5 +1,5 @@
 import array as arr
-from jaturing_GUI import launch
+from ui.jaturing_GUI import launch
 
 _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
