@@ -37,13 +37,22 @@ class JaturingFrame(ttk.Frame):
             self.add_rule_button = ttk.Button(master,
                                                       text = "Add rule",
                                                       command = root_frame.add_rule)
-            
+
+            self.save_file_button = ttk.Button(master,
+                                                      text = "Save file",
+                                                      command = root_frame.save_file)
+
+            self.load_file_button = ttk.Button(master,
+                                                      text = "Load file",
+                                                      command = root_frame.load_file)
             # self.return_to_start_button.grid(row = 0, column = 0)
             self.step_forward_button.grid(row=2, column = 1)        
             self.new_state_button.grid(row=2, column = 2)
             self.delete_state_button.grid(row=2, column = 3)
             self.delete_rule_button.grid(row=2, column=4)
             self.add_rule_button.grid(row=2, column=5)
+            self.save_file_button.grid(row=2, column=6)
+            self.load_file_button.grid(row=2, column=7)            
             
     class _Rule(ttk.Frame):
         """ Rule has the required fields to create a rule
@@ -219,9 +228,6 @@ class JaturingFrame(ttk.Frame):
                                                  rule.direction,
                                                  rule.next_state))
 
-        def foo(self):
-            print("FOO")
-            simpledialog.askstring("FOO","bar")
             
         def reload(self, machine):
             # current = self.tree.focus()
@@ -320,7 +326,7 @@ class JaturingFrame(ttk.Frame):
         new_state = self.rulefields.new_state.get()
 
         """
-        messagebox.showinfo(title="char", message=f"Merkki {c}")
+        
         character = simpledialog.askstring(title=f"New rule for state {state_name}", # TODO: Proper fields to the main windows
                                            prompt="Character read from tape")
         write_char = simpledialog.askstring(title=f"New rule for state {state_name}",
@@ -333,6 +339,12 @@ class JaturingFrame(ttk.Frame):
         self.app.machine.set_rule(state_name, character, write_char, direction, new_state)
         self.states_and_rules_tree.reload(self.master.machine)                
 
+    def save_file(self):
+        messagebox.showinfo(title="Save file", message=f"not implemented yet")
+
+    def load_file(self):
+        messagebox.showinfo(title="Load file", message=f"not implemented yet")
+        
     def _selected_rule(self):
         selected_rule = self.states_and_rules_tree.tree.focus().split(";")
         if not len(selected_rule) == 2:
