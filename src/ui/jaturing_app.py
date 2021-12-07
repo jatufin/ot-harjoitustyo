@@ -31,5 +31,6 @@ class JaturingApp(Tk):
         self.style.configure("Tape.TLabel", background = background_color, foreground = foreground_color,
                              width=3, justify = "center", font = ("Helvetica", 10))
         self.style.configure("TapeHead.TLabel",
-                             width=3, justify = "center", font = ("Helvetica", 10), background = "red")
-        self.style.configure("Tape.TEntry", width = 2, justify = "center", font = ("Helvetica", 24))        
+                             width=3, justify = "center", font = ("Helvetica", 12, "bold"), background = "red")
+        self.style.configure("Tape.TEntry", justify = "center", font = ("Helvetica", 24))
+        self.style.configure("Rule.TEntry", justify = "center", font = ("Helvetica", 24))        

@@ -1,11 +1,15 @@
 from tkinter import Tk
 from tkinter import ttk
 from tkinter import StringVar
+from tkinter import messagebox
 from tkinter import simpledialog
 
 
 class JaturingFrame(ttk.Frame):
     class _Buttons(ttk.Frame):
+        """ _Buttons object have all the buttons for controlling the
+        Turing's Machine
+        """
         def __init__(self, master, root_frame):
             super().__init__(master)
 
@@ -21,7 +25,7 @@ class JaturingFrame(ttk.Frame):
             #                                         command = root_frame.return_to_start)
 
             self.new_state_button = ttk.Button(master,
-                                          text = "New state",
+                                          text = "Add state",
                                           command = root_frame.new_state)
             self.delete_state_button = ttk.Button(master,
                                           text = "Delete state",
@@ -35,14 +39,49 @@ class JaturingFrame(ttk.Frame):
                                                       command = root_frame.add_rule)
             
             # self.return_to_start_button.grid(row = 0, column = 0)
-            self.step_forward_button.grid(row = 0, column = 1)        
-            self.new_state_button.grid(row = 0, column = 2)
-            self.delete_state_button.grid(row = 0, column = 3)
-            self.delete_rule_button.grid(row=0, column=4)
-            self.add_rule_button.grid(row=0, column=5)
+            self.step_forward_button.grid(row=2, column = 1)        
+            self.new_state_button.grid(row=2, column = 2)
+            self.delete_state_button.grid(row=2, column = 3)
+            self.delete_rule_button.grid(row=2, column=4)
+            self.add_rule_button.grid(row=2, column=5)
             
+    class _Rule(ttk.Frame):
+        """ Rule has the required fields to create a rule
+        in a state
+        """
+        def __init__(self, master):
+            super().__init__(master)
+            
+            self.state = StringVar()
+            self.character = StringVar()
+            self.write_char = StringVar()
+            self.direction = StringVar()
+            self.new_state = StringVar()
+            
+            # self.state_entry = ttk.Entry(self, textvariable=self.state, width=7)
+            self.character_entry = ttk.Entry(self, textvariable=self.character, width=7)            
+            self.write_char_entry = ttk.Entry(self, textvariable=self.write_char, width=7)
+            self.direction_entry = ttk.Entry(self, textvariable=self.direction, width=7)
+            self.new_state_entry = ttk.Entry(self, textvariable=self.new_state, width=7)
 
+            # self.state_entry.grid(row=1, column=1)
+            self.character_entry.grid(row=1, column=2)
+            self.write_char_entry.grid(row=1, column=3)            
+            self.direction_entry.grid(row=1, column=4)
+            self.new_state_entry.grid(row=1, column=5)
+
+            # ttk.Label(self, text="State").grid(row=0, column=1)
+            ttk.Label(self, text="Read char").grid(row=0, column=2)
+            ttk.Label(self, text="Write char").grid(row=0, column=3)            
+            ttk.Label(self, text="Move to").grid(row=0, column=4)
+            ttk.Label(self, text="New state").grid(row=0, column=5)
+            
+            
+            
     class _Tape(ttk.Frame):
+        """ _Tape object handles the graphical representation of the
+        Turin's Machine's tape on screen
+        """
         def __init__(self, master, size, head = 0):
             """ The shown tape is 2 times length of size, from 0-size to 0+size
             """
@@ -154,7 +193,10 @@ class JaturingFrame(ttk.Frame):
             self.tree.column("#3", stretch="yes", width=70)            
             self.tree.heading("#4", text="New state")
             self.tree.column("#4", stretch="yes", width=100)            
+
             self.tree.pack()
+
+
 
         def clear_tree(self):
             for item in self.tree.get_children():
@@ -176,22 +218,16 @@ class JaturingFrame(ttk.Frame):
                                                  rule.write_char,
                                                  rule.direction,
                                                  rule.next_state))
-                        
+
+        def foo(self):
+            print("FOO")
+            simpledialog.askstring("FOO","bar")
+            
         def reload(self, machine):
             # current = self.tree.focus()
             self.clear_tree()
             self.load(machine.states)
             # self.tree.focus(current) # TODO: Does not take account deletion of items
-
-    class _NewRule(ttk.Frame):
-        def __init__(self, master):
-            super().__init__(master)
-
-            self.state = ttk.Label(width=50)
-            self.character = ttk.Entry(width=50)
-            self.write_char = ttk.Entry(width=50)
-            self.direction = ttk.Entry(width=50)
-            self.next_state = ttk.Entry(width=50)
             
     def __init__(self, container):
         super().__init__(container)
@@ -207,9 +243,11 @@ class JaturingFrame(ttk.Frame):
         
         # self.frame_right = ttk.Frame(self)
         # self.frame_right.grid(row=1, column=1)
-        
+
+        self.frame_middle = ttk.Frame(self)
+        self.frame_middle.grid(row=2, column=0, columnspan=2, sticky="ew")
         self.frame_bottom = ttk.Frame(self)
-        self.frame_bottom.grid(row=2, column=0, columnspan=2, sticky="ew")
+        self.frame_bottom.grid(row=3, column=0, columnspan=2, sticky="ew")
 
         self.tape = self._Tape(self.frame_top, 10)
         self.tape.pack()
@@ -218,20 +256,29 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree = self._StatesAndRules(self.frame_left)
         self.states_and_rules_tree.pack()
         self.states_and_rules_tree.load(container.machine.states)
-                                          
-        self.buttons = self._Buttons(self.frame_bottom, self)
-        self.buttons.grid()
+
         
-        self.pack(**options)
+        self.rulefields = self._Rule(self.frame_middle)
+        self.rulefields.grid(row=2,column=2, columnspan=2, sticky="w")
+        
+        self.buttons = self._Buttons(self.frame_bottom, self)
+        self.buttons.grid(row=3,column=2, columnspan=2, sticky="w")
+
+        self.grid(**options)
 
     def return_to_start(self):
         print("return to start") # TODO: Implementation missing
 
+    def foo(self):
+        print("FOO")
+        simpledialog.askstring("FOO","bar")
+ 
+        
     def step_forward(self):
         if self.app.machine.current_state == None:
             current_state = self._selected_state()
             if not current_state:
-                print("No state selected") # TODO: GUI implementation
+                messagebox.showinfo(title="No state", message="No state selected")
                 return
             self.app.machine.current_state = current_state
 
@@ -254,17 +301,26 @@ class JaturingFrame(ttk.Frame):
     def delete_rule(self):
         rule = self._selected_rule()
         if rule is None:
-            print("No rule to delete") # TODO: GUI message or button enable/disable
+            messagebox.showinfo(title="No rule", message="No rule to delete")
             return
         state = self._selected_state()
         self.app.machine.delete_rule(state, rule)
         self.states_and_rules_tree.reload(self.master.machine)        
 
     def add_rule(self):
+        print("Add rule")
         state_name = self._selected_state()
         if state_name is None:
-            print("No state selected") # TODO: GUI message or button enable/disable
+            messagebox.showinfo(title="No state", message="No state selected")
             return
+
+        character = self.rulefields.character.get()
+        write_char = self.rulefields.write_char.get()
+        direction = self.rulefields.direction.get()
+        new_state = self.rulefields.new_state.get()
+
+        """
+        messagebox.showinfo(title="char", message=f"Merkki {c}")
         character = simpledialog.askstring(title=f"New rule for state {state_name}", # TODO: Proper fields to the main windows
                                            prompt="Character read from tape")
         write_char = simpledialog.askstring(title=f"New rule for state {state_name}",
@@ -273,6 +329,7 @@ class JaturingFrame(ttk.Frame):
                                            prompt="Head movement (LEFT or RIGHT)")
         new_state = simpledialog.askstring(title=f"New rule for state {state_name}",
                                            prompt="Next state")
+        """
         self.app.machine.set_rule(state_name, character, write_char, direction, new_state)
         self.states_and_rules_tree.reload(self.master.machine)                
 
@@ -286,6 +343,6 @@ class JaturingFrame(ttk.Frame):
         selected_state = self.states_and_rules_tree.tree.focus().split(";")
         if not len(selected_state) > 0:
             return None
-        if selected_state[0] is "":
+        if selected_state[0] == "":
             return None
         return selected_state[0] # rule iid in the TreeView is "state;rule"
