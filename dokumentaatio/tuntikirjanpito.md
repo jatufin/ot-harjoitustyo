@@ -8,5 +8,5 @@
 | 29.11. | 4    | Aloitettiin käyttäliittymän rakentaminen |
 | 30.11. | 13   | GUI, toiminta ja yksikkötestaus |
 | 07.12. | 8    | GUI, yksikkötestaus | 
-
-Tunteja yhteensä: 35
+| 08.12. | 3    | JSON export ja import, lataus ja tallennus. GUI-korjauksia |
+Tunteja yhteensä: 38
