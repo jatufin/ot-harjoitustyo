@@ -15,6 +15,14 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.add_state("q1")
         self.assertIsNotNone(self.jaturing.get_state("q1"))
 
+    def test_init_states_initializes_states(self):
+        self.jaturing.init_states()
+        self.assertEqual(len(self.jaturing._states), 2)
+
+    def test_clear_tape_clears_states(self):
+        self.jaturing.clear_tape()
+        self.assertEqual(str(self.jaturing._tape), "|>")
+    
     def test_default_accept_state_is_recognized(self):
         self.assertTrue(self.jaturing.is_accept_or_reject("ACCEPT"))
 
@@ -72,3 +80,24 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.current_state = "q1"
         self.jaturing.delete_state('q1')
         self.assertEqual(self.jaturing.current_state, None)
+
+    def test_export_json_generates_proper_json_string(self):
+        correct_json = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": null, "right_tape": [46]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
+        
+        self.jaturing.set_rule(state_name="q0",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q1")
+        self.jaturing.set_rule(state_name="q0",
+                               character="b",
+                               write_char="B",
+                               direction="RIGHT",
+                               next_state="q1")
+        self.assertEqual(self.jaturing.exportJSON(), correct_json)
+
+    def test_import_json_produces_correct_machine(self):
+        json_in = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": null, "right_tape": [46]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
+        self.jaturing.importJSON(json_in)
+        json_out = self.jaturing.exportJSON()
+        self.assertEqual(json_in, json_out)

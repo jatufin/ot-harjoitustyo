@@ -26,9 +26,9 @@ Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta aset
 
 ### Komentorivikäyttöliittymä
 
-```$ python3 jaturing machinefile.tur [inputstring | -i inputfile.tape] [--verbose | -v]```
+```$ python3 jaturing machinefile.json [inputstring | -i inputfile.tape] [--verbose | -v]```
 
-Komento suorittaa annetun ```machinefile.tur``` Turingin koneen. Nauhan alkutilana toimii joko ```inputsring```-argumentti, tai ```inputfile```-tiedoston sisältö.
+Komento suorittaa annetun ```machinefile.json``` Turingin koneen. Nauhan alkutilana toimii joko ```inputsring```-argumentti, tai ```inputfile```-tiedoston sisältö.
 
 Valinnalla ```--verbose``` tulostetaan riveittän jokainen tilasiirtymä, muussa tapauksessa ainoastaan nauhan tila koneen pysähtyessä tulostetaan.
 

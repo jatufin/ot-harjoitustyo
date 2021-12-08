@@ -22,14 +22,17 @@ class State:
         self._rules.pop(rule)
 
     def get_rules_in_dictionary(self):
+        """ Generate dictionary object from all rules and return for use
+        in the exportJSON  method of the Jaturing main class
+        """
         dict = {}
         for character, rule in self._rules.items():
             dict[character] = {"next_state": rule.next_state,
                                "direction": rule.direction,
                                "write_char": rule.write_char}
         return dict
-                          
-            
+         
+        
     @property
     def rules(self):
         return self._rules

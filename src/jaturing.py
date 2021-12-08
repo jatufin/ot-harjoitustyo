@@ -1,3 +1,4 @@
+import sys
 import json
 
 from ui.jaturing_GUI import launch
@@ -12,15 +13,9 @@ class Jaturing:
     def __init__(self):
         self._alphabet = _ALPHABET
         self._tape = Tape(self._alphabet)
-        self._states = {}
-        self.current_state = None
 
-        self._accept_state = "ACCEPT"
-        self.add_state(self._accept_state)
-
-        self._reject_state = "REJECT"
-        self.add_state(self._reject_state)
-
+        self.init_states()
+        
     @property
     def states(self):
         return self._states
@@ -29,6 +24,16 @@ class Jaturing:
     def tape(self):
         return self._tape
 
+    def init_states(self):
+        self._states = {}
+        self.current_state = None
+
+        self._accept_state = "ACCEPT"
+        self.add_state(self._accept_state)
+
+        self._reject_state = "REJECT"
+        self.add_state(self._reject_state)
+        
     def add_state(self, name):
         self._states[name] = State()
 
@@ -44,6 +49,9 @@ class Jaturing:
             return None
         return self._states[name]
 
+    def clear_tape(self):
+        self._tape = Tape(self._alphabet)        
+            
     def set_rule(self, state_name,
                  character,
                  write_char,
@@ -70,6 +78,15 @@ class Jaturing:
         character = self.tape.read()
         state = self.get_state(self.current_state)
         rule = state.get_rule(character)
+
+        if self.current_state == self._reject_state:
+            print("Reject states was reached")
+            return
+        
+        if self.current_state == self._accepm_state:
+            print("Accept states was reached")
+            return
+        
         print(f"Current state is: {self.current_state}")
         print(f"From tape was read: {character}")
         if not rule:
@@ -117,15 +134,76 @@ class Jaturing:
         return json.dumps(machine)
 
 
-    def importJSON(self):
-        pass
+    def importJSON(self, json_string):
+        self.init_states()
+        self.clear_tape()
+        
+        import_dict = json.loads(json_string)
+        
+        self._alphabet = import_dict["alphabet"]
+        self._accept_state = import_dict["accept_state"]
+        self._reject_state = import_dict["reject_state"]
+
+        tape = import_dict["tape"]
+        self._tape.put_dictionary(tape)
+
+        states = import_dict["states"]
+        
+        for state_name, rules_dict in states.items():
+            rules = rules_dict["rules"]
+            for character, rule in rules.items():
+                self.set_rule(state_name=state_name,
+                              character=character,
+                              write_char = rule["write_char"],
+                              direction = rule["direction"],
+                              next_state = rule["next_state"])
+def main():
+    argc = len(sys.argv)
+    args = sys.argv[1:]
     
-def main():    
     jaturing = Jaturing()
+
+    if(argc == 1):
+        launch(jaturing)
+
+    print(f"Command line args: {args} ")
+
+    jaturing.set_rule(state_name="q0",
+                      character="a",
+                      write_char="A",
+                      direction="RIGHT",
+                      next_state="q1")
+    jaturing.set_rule(state_name="q0",
+                      character="b",
+                      write_char="B",
+                      direction="RIGHT",
+                      next_state="q1")    
+
+
+
+    jaturing.print_states_and_rules()
+
+    print("EXPORT")
+    json_string = jaturing.exportJSON()
+    print("Exportstring:")
+    print(json_string)
+
+    print("CLEAR")
+    jaturing.init_states()
+    jaturing.clear_tape()
+    jaturing.print_states_and_rules()
+
+    print("IMPORT")
+    jaturing.importJSON(json_string)
+    jaturing.print_states_and_rules()
+
+    print("NEW EXPORT")
+    json_string = jaturing.exportJSON()
+    print("Exportstring:")
+    print(json_string)
     
-    jaturing.exportJSON()
     
-    launch(jaturing)
+
 
 
 if __name__ == "__main__":

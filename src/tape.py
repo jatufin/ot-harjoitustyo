@@ -10,6 +10,7 @@ class Tape:
             self._alphabet = _ALPHABET
         else:
             self._alphabet = alphabet
+            
         self._negative_index_allowed = negative_index_allowed
 
         if negative_index_allowed:
@@ -24,6 +25,9 @@ class Tape:
     def get_head_position(self):
         return self._head_position
 
+    def set_alphabet(alphabet):
+        self._alphabet = alphabet
+        
     def read(self):
         if self._head_position < 0:
             return chr(self._left_tape[abs(self._head_position)-1])
@@ -134,8 +138,18 @@ class Tape:
         return return_string.strip(chr(self._empty))  # Strip empty cells
 
     def get_dictionary(self):
+        """ Generate dictionary object from the tape and return for use
+        in the exportJSON  method of the Jaturing main class
+        """
         return {"head_position": self._head_position,
                 "negative_index_allowed": self._negative_index_allowed,
                 "left_tape": self._left_tape.tolist() if self._negative_index_allowed else None,
-                "righ_tape": self._right_tape.tolist()}
+                "right_tape": self._right_tape.tolist()}
 
+    def put_dictionary(self, tape_dict):
+        """ Get tape from an dictionary object.
+        """
+        self._head_position = tape_dict["head_position"]
+        self.negative_index_allowed = tape_dict["negative_index_allowed"]
+        self._left_tape = tape_dict["left_tape"]
+        self.right_tape = tape_dict["right_tape"]
