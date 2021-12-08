@@ -4,7 +4,15 @@ _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 
 class Tape:
-    def __init__(self, alphabet="", init_string="", negative_index_allowed=False):
+    """ Tape object containse the actual tape arrays and head position.
+    If negative head is allowed to move to the left from
+    0 position, it is indicted in _negative_index_allowed propert
+    Left side and right side tapes from the 0 position are stored to
+    separate arrays.
+    """
+    def __init__(self, alphabet="",
+                 init_string="",
+                 negative_index_allowed=False):
         self._empty = ord('.')
         if alphabet == "":
             self._alphabet = _ALPHABET
@@ -20,12 +28,12 @@ class Tape:
         else:
             init_list = list(map(ord, init_string))
         self._right_tape = arr.array('B', init_list)
-        self._head_position=0
+        self._head_position = 0
 
     def get_head_position(self):
         return self._head_position
 
-    def set_alphabet(alphabet):
+    def set_alphabet(self, alphabet):
         self._alphabet = alphabet
         
     def read(self):
@@ -54,7 +62,8 @@ class Tape:
         return True
 
     def move_left(self):
-        ''' Returns false, if movement to left from 0 is not allowed '''
+        ''' Returns false, if movement to left from 0 is not allowed
+        '''
         if (self._head_position == 0 and
             not self._negative_index_allowed):
             return False
@@ -84,10 +93,10 @@ class Tape:
             return "."
         return chr(tape[index])
 
-
     def get_slice(self, length):
-        """ Return a 2*length long slice from the tape from both sides of the head_position
-        each element in the list is a tuple containing index number and value
+        """ Return a 2*length long slice from the tape from both sides of the
+        head_position each element in the list is a tuple containing index
+        number and value. This method is meant to be used by the user interface.
         """
         return_list = []
         for i in range(self._head_position - length, self._head_position + length):
@@ -138,8 +147,9 @@ class Tape:
         return return_string.strip(chr(self._empty))  # Strip empty cells
 
     def get_dictionary(self):
-        """ Generate dictionary object from the tape and return for use
-        in the exportJSON  method of the Jaturing main class
+        """ Generate a dictionary object from the tape.
+        This is meant to be used by the exportJSON  method of the Jaturing
+        main class
         """
         return {"head_position": self._head_position,
                 "negative_index_allowed": self._negative_index_allowed,
@@ -147,7 +157,9 @@ class Tape:
                 "right_tape": self._right_tape.tolist()}
 
     def put_dictionary(self, tape_dict):
-        """ Get tape from an dictionary object.
+        """ Populate a tape from a dictionary object
+        This is meant to be used by the exportJSON  method of the Jaturing
+        main class
         """
         self._head_position = tape_dict["head_position"]
         self.negative_index_allowed = tape_dict["negative_index_allowed"]

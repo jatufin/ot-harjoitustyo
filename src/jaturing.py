@@ -10,6 +10,10 @@ _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 
 class Jaturing:
+    """ Main class of the Jaturing Turing's machine
+    The tape of the machine is kept in self._tape object
+    and states with transition rules are in self._states dictionary
+    """
     def __init__(self):
         self._alphabet = _ALPHABET
         self._tape = Tape(self._alphabet)
@@ -25,6 +29,9 @@ class Jaturing:
         return self._tape
 
     def init_states(self):
+        ''' Initially the mahcine has always two halting states:
+        ACCEPT and REJECT.
+        '''
         self._states = {}
         self.current_state = None
 
@@ -58,6 +65,13 @@ class Jaturing:
                  direction,
                  next_state
                  ):
+        ''' Rule needs following information:
+        state_name - Current state, where the rule is applied
+        character - The character which is read from the tape, and which triggers the rule
+        write_char - The character which should be written to the current position
+        of the state
+        directien - Where the tape should be moved after writing the character: LEFT or RIGHT
+        next_state - The new state after this operation        '''
         if not self.get_state(state_name):
             self.add_state(state_name)
         self.get_state(state_name).set_rule(character=character,
