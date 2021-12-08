@@ -323,24 +323,18 @@ class JaturingFrame(ttk.Frame):
         direction = self.rulefields.direction.get()
         new_state = self.rulefields.new_state.get()
 
-        """
-        
-        character = simpledialog.askstring(title=f"New rule for state {state_name}", # TODO: Proper fields to the main windows
-                                           prompt="Character read from tape")
-        write_char = simpledialog.askstring(title=f"New rule for state {state_name}",
-                                           prompt="Write character to tape")
-        direction = simpledialog.askstring(title=f"New rule for state {state_name}",
-                                           prompt="Head movement (LEFT or RIGHT)")
-        new_state = simpledialog.askstring(title=f"New rule for state {state_name}",
-                                           prompt="Next state")
-        """
         self.app.machine.set_rule(state_name, character, write_char, direction, new_state)
         self.states_and_rules_tree.reload(self.master.machine)                
 
     def save_file(self):
         json_string = self.app.machine.exportJSON()
 
-        f = filedialog.asksaveasfile(mode="w")
+        f = filedialog.asksaveasfile(mode="w",
+                                     initialfile="Untitled.json",
+                                     defaultextension=".json",
+                                     filetypes=[("JSON files", "*.json"),
+                                                ("All files", "*.*")])
+                                                
         if f is None:
             return
 
@@ -348,8 +342,10 @@ class JaturingFrame(ttk.Frame):
         f.close()
         
     def load_file(self):
-        f = filedialog.askopenfile(mode="r")
-
+        f = filedialog.askopenfile(mode="r",
+                                   defaultextension=".json",
+                                   filetypes=[("JSON files", "*.json"),
+                                              ("All files", "*.*")])
         json_string = f.read()
         f.close()
 
