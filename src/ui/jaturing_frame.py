@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import StringVar
 from tkinter import messagebox
 from tkinter import simpledialog
+from tkinter import filedialog
 
 
 class JaturingFrame(ttk.Frame):
@@ -205,8 +206,6 @@ class JaturingFrame(ttk.Frame):
 
             self.tree.pack()
 
-
-
         def clear_tree(self):
             for item in self.tree.get_children():
                 self.tree.delete(item)
@@ -227,7 +226,6 @@ class JaturingFrame(ttk.Frame):
                                                  rule.write_char,
                                                  rule.direction,
                                                  rule.next_state))
-
             
         def reload(self, machine):
             # current = self.tree.focus()
@@ -340,10 +338,23 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.reload(self.master.machine)                
 
     def save_file(self):
-        messagebox.showinfo(title="Save file", message=f"not implemented yet")
+        json_string = self.app.machine.exportJSON()
 
+        f = filedialog.asksaveasfile(mode="w")
+        if f is None:
+            return
+
+        f.write(json_string)
+        f.close()
+        
     def load_file(self):
-        messagebox.showinfo(title="Load file", message=f"not implemented yet")
+        f = filedialog.askopenfile(mode="r")
+
+        json_string = f.read()
+        f.close()
+
+        self.app.machine.importJSON(json_string)
+        self.app.refresh()
         
     def _selected_rule(self):
         selected_rule = self.states_and_rules_tree.tree.focus().split(";")

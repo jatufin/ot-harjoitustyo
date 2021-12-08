@@ -18,6 +18,10 @@ class JaturingApp(Tk):
         self.machine = machine        
         self.root = JaturingFrame(self)
 
+    def refresh(self):
+        self.root.destroy()
+        self.root = JaturingFrame(self)
+        
     def set_style(self):
         background_color = "#ddddff"
         foreground_color = "#000000"

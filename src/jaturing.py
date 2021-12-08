@@ -163,45 +163,9 @@ def main():
     
     jaturing = Jaturing()
 
+    # If no args, start GUI application    
     if(argc == 1):
         launch(jaturing)
-
-    print(f"Command line args: {args} ")
-
-    jaturing.set_rule(state_name="q0",
-                      character="a",
-                      write_char="A",
-                      direction="RIGHT",
-                      next_state="q1")
-    jaturing.set_rule(state_name="q0",
-                      character="b",
-                      write_char="B",
-                      direction="RIGHT",
-                      next_state="q1")    
-
-
-
-    jaturing.print_states_and_rules()
-
-    print("EXPORT")
-    json_string = jaturing.exportJSON()
-    print("Exportstring:")
-    print(json_string)
-
-    print("CLEAR")
-    jaturing.init_states()
-    jaturing.clear_tape()
-    jaturing.print_states_and_rules()
-
-    print("IMPORT")
-    jaturing.importJSON(json_string)
-    jaturing.print_states_and_rules()
-
-    print("NEW EXPORT")
-    json_string = jaturing.exportJSON()
-    print("Exportstring:")
-    print(json_string)
-    
     
 
 
