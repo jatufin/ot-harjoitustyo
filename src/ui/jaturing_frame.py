@@ -4,6 +4,7 @@ from tkinter import StringVar
 from tkinter import messagebox
 from tkinter import simpledialog
 from tkinter import filedialog
+from tkinter import OptionMenu
 
 
 class JaturingFrame(ttk.Frame):
@@ -16,7 +17,7 @@ class JaturingFrame(ttk.Frame):
 
             self.configure(height = 50)
 
-            self.step_forward_button = ttk.Button(master,
+            self.step_forward_button = ttk.Button(self,
                                                   text = "Step Forward",
                                                   command = root_frame.step_forward)
             
@@ -25,41 +26,37 @@ class JaturingFrame(ttk.Frame):
             #                                         text = "Return",
             #                                         command = root_frame.return_to_start)
 
-            self.new_state_button = ttk.Button(master,
+            self.new_state_button = ttk.Button(self,
                                           text = "Add state",
                                           command = root_frame.new_state)
-            self.delete_state_button = ttk.Button(master,
+            self.delete_state_button = ttk.Button(self,
                                           text = "Delete state",
                                           command = root_frame.delete_state)
        
-            self.delete_rule_button = ttk.Button(master,
+            self.delete_rule_button = ttk.Button(self,
                                                       text = "Delete rule",
                                                       command = root_frame.delete_rule)
-            self.add_rule_button = ttk.Button(master,
-                                                      text = "Add rule",
-                                                      command = root_frame.add_rule)
 
-            self.save_file_button = ttk.Button(master,
+            self.save_file_button = ttk.Button(self,
                                                       text = "Save file",
                                                       command = root_frame.save_file)
 
-            self.load_file_button = ttk.Button(master,
+            self.load_file_button = ttk.Button(self,
                                                       text = "Load file",
                                                       command = root_frame.load_file)
-            # self.return_to_start_button.grid(row = 0, column = 0)
+
             self.step_forward_button.grid(row=2, column = 1)        
             self.new_state_button.grid(row=2, column = 2)
             self.delete_state_button.grid(row=2, column = 3)
             self.delete_rule_button.grid(row=2, column=4)
-            self.add_rule_button.grid(row=2, column=5)
-            self.save_file_button.grid(row=2, column=6)
-            self.load_file_button.grid(row=2, column=7)            
+            self.save_file_button.grid(row=2, column=5)
+            self.load_file_button.grid(row=2, column=6)            
             
     class _Rule(ttk.Frame):
         """ Rule has the required fields to create a rule
         in a state
         """
-        def __init__(self, master):
+        def __init__(self, master, root_frame):
             super().__init__(master)
             
             self.state = StringVar()
@@ -68,23 +65,28 @@ class JaturingFrame(ttk.Frame):
             self.direction = StringVar()
             self.new_state = StringVar()
             
-            # self.state_entry = ttk.Entry(self, textvariable=self.state, width=7)
             self.character_entry = ttk.Entry(self, textvariable=self.character, width=7)            
             self.write_char_entry = ttk.Entry(self, textvariable=self.write_char, width=7)
-            self.direction_entry = ttk.Entry(self, textvariable=self.direction, width=7)
+
+            directions = ["RIGHT","LEFT"]
+            self.direction.set(directions[0])
+            self.direction_menu = OptionMenu(self, self.direction, *directions)
             self.new_state_entry = ttk.Entry(self, textvariable=self.new_state, width=7)
+            self.add_rule_button = ttk.Button(self,
+                                              text = "Add rule",
+                                              command = root_frame.add_rule)
+            
 
-            # self.state_entry.grid(row=1, column=1)
-            self.character_entry.grid(row=1, column=2)
-            self.write_char_entry.grid(row=1, column=3)            
-            self.direction_entry.grid(row=1, column=4)
-            self.new_state_entry.grid(row=1, column=5)
-
-            # ttk.Label(self, text="State").grid(row=0, column=1)
-            ttk.Label(self, text="Read char").grid(row=0, column=2)
-            ttk.Label(self, text="Write char").grid(row=0, column=3)            
-            ttk.Label(self, text="Move to").grid(row=0, column=4)
-            ttk.Label(self, text="New state").grid(row=0, column=5)
+            self.character_entry.grid(row=1, column=1)
+            self.write_char_entry.grid(row=1, column=2)
+            self.direction_menu.grid(row=1, column=3)
+            self.new_state_entry.grid(row=1, column=4)
+            self.add_rule_button.grid(row=1, column=5)
+            
+            ttk.Label(self, text="Read char").grid(row=0, column=1)
+            ttk.Label(self, text="Write char").grid(row=0, column=2)            
+            ttk.Label(self, text="Move to").grid(row=0, column=3)
+            ttk.Label(self, text="New state").grid(row=0, column=4)
             
             
             
@@ -262,7 +264,7 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.load(container.machine.states)
 
         
-        self.rulefields = self._Rule(self.frame_middle)
+        self.rulefields = self._Rule(self.frame_middle, self)
         self.rulefields.grid(row=2,column=2, columnspan=2, sticky="w")
         
         self.buttons = self._Buttons(self.frame_bottom, self)

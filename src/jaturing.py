@@ -94,11 +94,11 @@ class Jaturing:
         rule = state.get_rule(character)
 
         if self.current_state == self._reject_state:
-            print("Reject states was reached")
+            print("Reject state was reached")
             return
         
-        if self.current_state == self._accepm_state:
-            print("Accept states was reached")
+        if self.current_state == self._accept_state:
+            print("Accept state was reached")
             return
         
         print(f"Current state is: {self.current_state}")
