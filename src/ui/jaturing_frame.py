@@ -84,7 +84,7 @@ class JaturingFrame(ttk.Frame):
             self.new_state_entry.grid(row=1, column=4)
             self.add_rule_button.grid(row=1, column=5)
 
-            ttk.Label(self, text="Label").grid(row=0, column=0)            
+            ttk.Label(self, text="State").grid(row=0, column=0)            
             ttk.Label(self, text="Read char").grid(row=0, column=1)
             ttk.Label(self, text="Write char").grid(row=0, column=2)            
             ttk.Label(self, text="Move to").grid(row=0, column=3)
@@ -251,12 +251,11 @@ class JaturingFrame(ttk.Frame):
         def reload(self, machine):
             self.clear_tree()
             self.load(machine.states)
-            self._tree_expand_all()
 
         def _tree_expand_all(self):
             top_branches = self.tree.get_children()
             for branch in top_branches:
-                self.tree.item(branch, option="open")
+                self.tree.item(branch, open=True)
                 
     def __init__(self, container):
         """ Main JaturingFrame frame initializer
