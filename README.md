@@ -6,7 +6,7 @@ Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, j
 
 ### Projektin tila
 * Turingin koneen pääluokat metodeineen ovat valmiit
-* raafinen käyttöliittymä toimii, joskaan ei ole valmis
+* Graafinen käyttöliittymä toimii, joskaan ei ole valmis
 * Koneen tilan tallennus ja lataus tiedostoon toimivat
 * Yksikkötestaus on lähes kattava
 * Komentoriviargumenttien käsittelyä ei ole toteutettu
@@ -14,7 +14,8 @@ Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, j
 
 ### Puuttuva toiminnallisuus
 * Tilakartan graafinen esitys
-* Käyttöliittymä on vielä hiomaton ja muunmuassa palaaminen alkutilaan
+* Komentoriviargumenttien käsittely
+* Käyttöliittymä on vielä hiomaton ja muunmuassa palaaminen alkutilaan puuttuu
 
 ### Dokumentaatio
 [Työaikakirjaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)

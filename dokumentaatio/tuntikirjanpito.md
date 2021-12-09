@@ -9,4 +9,6 @@
 | 30.11. | 13   | GUI, toiminta ja yksikkötestaus |
 | 07.12. | 8    | GUI, yksikkötestaus | 
 | 08.12. | 3    | JSON export ja import, lataus ja tallennus. GUI-korjauksia |
-Tunteja yhteensä: 38
+| 09.12. | 2    | Bug fixes and GUI refining |
+
+Tunteja yhteensä: 40
