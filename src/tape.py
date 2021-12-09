@@ -163,5 +163,6 @@ class Tape:
         """
         self._head_position = tape_dict["head_position"]
         self.negative_index_allowed = tape_dict["negative_index_allowed"]
-        self._left_tape = tape_dict["left_tape"]
-        self._right_tape = tape_dict["right_tape"]
+        if tape_dict["left_tape"]:
+            self._left_tape = arr.array('B', tape_dict["left_tape"])
+        self._right_tape = arr.array('B', tape_dict["right_tape"])

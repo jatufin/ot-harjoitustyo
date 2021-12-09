@@ -19,6 +19,7 @@ class Jaturing:
         self._tape = Tape(self._alphabet)
 
         self.init_states()
+        self.halted = False
         
     @property
     def states(self):
@@ -34,7 +35,6 @@ class Jaturing:
         '''
         self._states = {}
         self.current_state = None
-
         self.start_state = None
         
         self._accept_state = "ACCEPT"
@@ -96,30 +96,32 @@ class Jaturing:
         rule = state.get_rule(character)
 
         if self.current_state == self._reject_state:
-            print("Reject state was reached")
+            self.halt()
             return
         
         if self.current_state == self._accept_state:
-            print("Accept state was reached")
+            self.halt()
             return
         
-        print(f"Current state is: {self.current_state}")
-        print(f"From tape was read: {character}")
         if not rule:
-            print("No rule was found for")
+            self.halt()
             return
-        print(f"Write: {rule.write_char}")
+
         self.tape.write(rule.write_char)
 
-        print(f"Move tape: {rule.direction}")
         if rule.direction == "RIGHT":
             self.tape.move_right()
         elif rule.direction == "LEFT":
             self.tape.move_left()
 
-        print(f"Change state to: {rule.next_state}")
         self.current_state = rule.next_state
 
+    def halt(self):
+        self.halted = True
+
+    def unhalt(self):
+        self.halted = False
+        
     def print_states_and_rules(self):
         print("STATUS")
         print(f"Tape: {str(self._tape)}")
