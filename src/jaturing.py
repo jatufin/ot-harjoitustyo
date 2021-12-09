@@ -35,6 +35,8 @@ class Jaturing:
         self._states = {}
         self.current_state = None
 
+        self.start_state = None
+        
         self._accept_state = "ACCEPT"
         self.add_state(self._accept_state)
 
@@ -122,6 +124,7 @@ class Jaturing:
         print("STATUS")
         print(f"Tape: {str(self._tape)}")
         print(f"Current state: {self.current_state}")
+        print(f"Start state: {self.start_state}")
         print(f"Accept state: {self._accept_state}")
         print(f"Reject state: {self._reject_state}")
         print("States and rules:")
@@ -140,6 +143,7 @@ class Jaturing:
             states_dict[state_name] = {"rules": rules}
 
         machine = {"alphabet": _ALPHABET,
+                   "start_state": self.start_state,
                    "accept_state": self._accept_state,
                    "reject_state": self._reject_state,
                    "tape": self._tape.get_dictionary(),
@@ -155,6 +159,7 @@ class Jaturing:
         import_dict = json.loads(json_string)
         
         self._alphabet = import_dict["alphabet"]
+        self._accept_state = import_dict["start_state"]        
         self._accept_state = import_dict["accept_state"]
         self._reject_state = import_dict["reject_state"]
 
@@ -182,7 +187,6 @@ def main():
     # If no args, start GUI application    
     if(argc == 1):
         launch(jaturing)
-
 
 if __name__ == "__main__":
     main()
