@@ -64,7 +64,8 @@ class JaturingFrame(ttk.Frame):
             self.write_char = StringVar()
             self.direction = StringVar()
             self.new_state = StringVar()
-            
+
+            self.state_entry = ttk.Entry(self, textvariable=self.state, width=7)            
             self.character_entry = ttk.Entry(self, textvariable=self.character, width=7)            
             self.write_char_entry = ttk.Entry(self, textvariable=self.write_char, width=7)
 
@@ -76,13 +77,14 @@ class JaturingFrame(ttk.Frame):
                                               text = "Add rule",
                                               command = root_frame.add_rule)
             
-
+            self.state_entry.grid(row=1, column=0)
             self.character_entry.grid(row=1, column=1)
             self.write_char_entry.grid(row=1, column=2)
             self.direction_menu.grid(row=1, column=3)
             self.new_state_entry.grid(row=1, column=4)
             self.add_rule_button.grid(row=1, column=5)
-            
+
+            ttk.Label(self, text="Label").grid(row=0, column=0)            
             ttk.Label(self, text="Read char").grid(row=0, column=1)
             ttk.Label(self, text="Write char").grid(row=0, column=2)            
             ttk.Label(self, text="Move to").grid(row=0, column=3)
@@ -189,8 +191,11 @@ class JaturingFrame(ttk.Frame):
             self.reload()
             
     class _StatesAndRules(ttk.Frame):
-        def __init__(self, master):
+        """ TreeView contains states and their rules
+        """
+        def __init__(self, master, root_frame):
             super().__init__(master)
+            self.root_frame = root_frame
             
             self.tree = ttk.Treeview(self,
                                      selectmode="browse",
@@ -208,6 +213,20 @@ class JaturingFrame(ttk.Frame):
 
             self.tree.pack()
 
+            self.tree.bind("<<TreeviewSelect>>", self.tree_select)
+
+        def tree_select(self, event):
+            all_selected_states = self.tree.focus().split(";")
+            
+            if not len(all_selected_states) > 0:
+                return None
+            if all_selected_states[0] == "":
+                return None
+
+            selected_state = all_selected_states[0]
+            self.root_frame.set_current_state(selected_state)
+
+            
         def clear_tree(self):
             for item in self.tree.get_children():
                 self.tree.delete(item)
@@ -236,6 +255,8 @@ class JaturingFrame(ttk.Frame):
             # self.tree.focus(current) # TODO: Does not take account deletion of items
             
     def __init__(self, container):
+        """ Main JaturingFrame frame initializer
+        """
         super().__init__(container)
         self.app = container
         
@@ -259,7 +280,7 @@ class JaturingFrame(ttk.Frame):
         self.tape.pack()
         self.tape.load(container.machine)
 
-        self.states_and_rules_tree = self._StatesAndRules(self.frame_left)
+        self.states_and_rules_tree = self._StatesAndRules(self.frame_left, self)
         self.states_and_rules_tree.pack()
         self.states_and_rules_tree.load(container.machine.states)
 
@@ -314,12 +335,12 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.reload(self.master.machine)        
 
     def add_rule(self):
-        print("Add rule")
+        # TODO: remove
+        #state_name = self._selected_state()
+        #if state_name is None:
+        #    messagebox.showinfo(title="No state", message="No state selected")
+        #    return
         state_name = self._selected_state()
-        if state_name is None:
-            messagebox.showinfo(title="No state", message="No state selected")
-            return
-
         character = self.rulefields.character.get()
         write_char = self.rulefields.write_char.get()
         direction = self.rulefields.direction.get()
@@ -353,6 +374,9 @@ class JaturingFrame(ttk.Frame):
 
         self.app.machine.importJSON(json_string)
         self.app.refresh()
+
+    def set_current_state(self, state):
+        self.rulefields.state.set(state)
         
     def _selected_rule(self):
         selected_rule = self.states_and_rules_tree.tree.focus().split(";")
@@ -361,9 +385,5 @@ class JaturingFrame(ttk.Frame):
         return selected_rule[1] # rule iid in the TreeView is "state;rule"
 
     def _selected_state(self):
-        selected_state = self.states_and_rules_tree.tree.focus().split(";")
-        if not len(selected_state) > 0:
-            return None
-        if selected_state[0] == "":
-            return None
-        return selected_state[0] # rule iid in the TreeView is "state;rule"
+        return self.rulefields.state.get()
+
