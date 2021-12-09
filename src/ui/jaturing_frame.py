@@ -226,7 +226,6 @@ class JaturingFrame(ttk.Frame):
             selected_state = all_selected_states[0]
             self.root_frame.set_current_state(selected_state)
 
-            
         def clear_tree(self):
             for item in self.tree.get_children():
                 self.tree.delete(item)
@@ -247,13 +246,18 @@ class JaturingFrame(ttk.Frame):
                                                  rule.write_char,
                                                  rule.direction,
                                                  rule.next_state))
+            self._tree_expand_all()
             
         def reload(self, machine):
-            # current = self.tree.focus()
             self.clear_tree()
             self.load(machine.states)
-            # self.tree.focus(current) # TODO: Does not take account deletion of items
-            
+            self._tree_expand_all()
+
+        def _tree_expand_all(self):
+            top_branches = self.tree.get_children()
+            for branch in top_branches:
+                self.tree.item(branch, option="open")
+                
     def __init__(self, container):
         """ Main JaturingFrame frame initializer
         """
@@ -262,34 +266,36 @@ class JaturingFrame(ttk.Frame):
         
         options = {"padx": 10, "pady": 10}
 
+        # Top frame for the tape
         self.frame_top = ttk.Frame(self)
         self.frame_top.grid(row=0, column=0, columnspan=2, sticky="ew")
-        
-        self.frame_left = ttk.Frame(self)
-        self.frame_left.grid(row=1, column=0, sticky="w")
-        
-        # self.frame_right = ttk.Frame(self)
-        # self.frame_right.grid(row=1, column=1)
-
-        self.frame_middle = ttk.Frame(self)
-        self.frame_middle.grid(row=2, column=0, columnspan=2, sticky="ew")
-        self.frame_bottom = ttk.Frame(self)
-        self.frame_bottom.grid(row=3, column=0, columnspan=2, sticky="ew")
-
         self.tape = self._Tape(self.frame_top, 10)
         self.tape.pack()
         self.tape.load(container.machine)
 
+        # Left hand frame containing states and rules tree
+        self.frame_left = ttk.Frame(self)
+        self.frame_left.grid(row=1, column=0, sticky="w")
         self.states_and_rules_tree = self._StatesAndRules(self.frame_left, self)
         self.states_and_rules_tree.pack()
         self.states_and_rules_tree.load(container.machine.states)
 
-        
+        # Frame for graphical represetntation of the states
+        # self.frame_right = ttk.Frame(self)
+        # self.frame_right.grid(row=1, column=1)
+
+        # Frame below the tree and graph offering fields to create rules
+        self.frame_middle = ttk.Frame(self)
+        self.frame_middle.grid(row=2, column=0, columnspan=2, sticky="ew")        
         self.rulefields = self._Rule(self.frame_middle, self)
         self.rulefields.grid(row=2,column=2, columnspan=2, sticky="w")
-        
+
+        # Frame for control buttons
+        self.frame_bottom = ttk.Frame(self)
+        self.frame_bottom.grid(row=3, column=0, columnspan=2, sticky="ew")        
         self.buttons = self._Buttons(self.frame_bottom, self)
         self.buttons.grid(row=3,column=2, columnspan=2, sticky="w")
+
 
         self.grid(**options)
 
@@ -376,6 +382,7 @@ class JaturingFrame(ttk.Frame):
         self.app.refresh()
 
     def set_current_state(self, state):
+        self.app.machine.current_state = state
         self.rulefields.state.set(state)
         
     def _selected_rule(self):

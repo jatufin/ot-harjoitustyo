@@ -40,7 +40,7 @@ class Jaturing:
 
         self._reject_state = "REJECT"
         self.add_state(self._reject_state)
-        
+
     def add_state(self, name):
         self._states[name] = State()
 
@@ -171,6 +171,8 @@ class Jaturing:
                               write_char = rule["write_char"],
                               direction = rule["direction"],
                               next_state = rule["next_state"])
+
+                
 def main():
     argc = len(sys.argv)
     args = sys.argv[1:]
@@ -180,8 +182,6 @@ def main():
     # If no args, start GUI application    
     if(argc == 1):
         launch(jaturing)
-    
-
 
 
 if __name__ == "__main__":
