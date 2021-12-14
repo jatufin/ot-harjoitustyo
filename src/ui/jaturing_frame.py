@@ -1,6 +1,6 @@
 from tkinter import Tk
 from tkinter import ttk
-from tkinter import StringVar
+from tkinter import StringVar, BooleanVar
 from tkinter import messagebox
 from tkinter import simpledialog
 from tkinter import filedialog
@@ -31,15 +31,14 @@ class JaturingFrame(ttk.Frame):
             super().__init__(master)
 
             self.configure(height = 50)
-
+            
+            self.return_to_start_button = ttk.Button(self,
+                                                     text = "Return to start",
+                                                     command = root_frame.return_to_start)
+            
             self.step_forward_button = ttk.Button(self,
                                                   text = "Step Forward",
                                                   command = root_frame.step_forward)
-            
-            # TODO: Implementation / Return to start state
-            # self.return_to_start_button = ttk.Button(master,
-            #                                         text = "Return",
-            #                                         command = root_frame.return_to_start)
 
             self.new_state_button = ttk.Button(self,
                                           text = "Add state",
@@ -60,13 +59,77 @@ class JaturingFrame(ttk.Frame):
                                                       text = "Load file",
                                                       command = root_frame.load_file)
 
+            self.return_to_start_button.grid(row=2, column=0)
             self.step_forward_button.grid(row=2, column = 1)        
             self.new_state_button.grid(row=2, column = 2)
             self.delete_state_button.grid(row=2, column = 3)
             self.delete_rule_button.grid(row=2, column=4)
             self.save_file_button.grid(row=2, column=5)
             self.load_file_button.grid(row=2, column=6)            
+
+    class _Selections(ttk.Frame):
+        """Frame containing various selections for the machine
+        Attributes:
+            master : Tkinter container containing the _Graph
+            root_frame : Applications main Tkinter container
+        """
+        def __init__(self, master, root_frame):
+            """Constructor of the class
+
+            Args:
+                master : Tkinter container containing the _Graph
+                root_frame : Applications main Tkinter container
+            """
+            super().__init__(master)
+
+            self.current_state = StringVar()
+            self.start_state = StringVar()
+            self.left_tape_bool = BooleanVar()
+
+
+            self.current_state_label = ttk.Label(self,
+                                                 textvariable=self.current_state)
+            self.start_state_label = ttk.Label(self,
+                                               textvariable=self.start_state)
+            self.start_state_set_button = ttk.Button(self,
+                                                     text="Set start state to current ",
+                                                     command=root_frame.set_start_state_to_current)
+            self.left_tape_checkbutton = ttk.Checkbutton(self,
+                                                         text="Allow negative tape indices",
+                                                         variable=self.left_tape_bool,
+                                                         onvalue=True,
+                                                         offvalue=False,
+                                                         command=root_frame.set_negative_index_allowed)
+
+
+            ttk.Label(self, text="Current state:").grid(row=0, column=0)
+            self.current_state_label.grid(row=0, column=1)
             
+            ttk.Label(self, text="Start state:").grid(row=0, column=2)
+            self.start_state_label.grid(row=0, column=3)
+
+            self.start_state_set_button.grid(row=0, column=4)
+            self.left_tape_checkbutton.grid(row=0, column=5)
+
+            
+        def load(self, machine):
+            """Load field values from given Turing's machine
+
+            Args:
+                machine : Jaturing object
+            """
+            self.current_state.set(machine.current_state)
+            self.start_state.set(machine.start_state)
+            self.left_tape_bool.set(machine.tape.negative_index_allowed)
+
+        def reload(self, machine):
+            """Load field values from given Turing's machine
+
+            Args:
+                machine : Jaturing object
+            """
+            self.load(machine)
+        
     class _Rule(ttk.Frame):
         """Required fields to create a rule
         Attributes:
@@ -97,8 +160,8 @@ class JaturingFrame(ttk.Frame):
             self.direction_menu = OptionMenu(self, self.direction, *directions)
             self.new_state_entry = ttk.Entry(self, textvariable=self.new_state, width=7)
             self.add_rule_button = ttk.Button(self,
-                                              text = "Add rule",
-                                              command = root_frame.add_rule)
+                                              text="Add rule",
+                                              command=root_frame.add_rule)
             
             self.state_entry.grid(row=1, column=0)
             self.character_entry.grid(row=1, column=1)
@@ -179,7 +242,7 @@ class JaturingFrame(ttk.Frame):
             """Load the tape values from the Turing's machine
 
             Args:
-                machine : Jaturing object of the Turing' machine
+                machine : Jaturing machine
             """
             if not machine:
                 return
@@ -200,6 +263,9 @@ class JaturingFrame(ttk.Frame):
 
         def reload(self):
             """Reload the tape values from the Turing's machine
+
+            Args:
+                machine : Jaturing machine
             """            
             self.load(self.machine)
             
@@ -257,7 +323,7 @@ class JaturingFrame(ttk.Frame):
             """
             super().__init__(master)
             self.root_frame = root_frame
-            
+
             self.tree = ttk.Treeview(self,
                                      selectmode="browse",
                                      columns=("ReadChar", "WriteChar", "Direction", "NextState"))
@@ -435,13 +501,13 @@ class JaturingFrame(ttk.Frame):
                     continue
                 
                 if state_name == machine.current_state:
-                    color_map.append('pink')
-                    size_map.append(500)
+                    color_map.append('#ff6666')
+                    size_map.append(1500)
                     self.graph.add_node(state_name)
                     continue
 
-                color_map.append('gray')
-                size_map.append(500)
+                color_map.append('#dddddd')
+                size_map.append(1500)
                 self.graph.add_node(state_name) 
 
         def _add_rule_edges(self, machine):
@@ -495,25 +561,46 @@ class JaturingFrame(ttk.Frame):
         self.graph.pack()
         self.graph.load(container.machine)
 
-        # Frame below the tree and graph offering fields to create rules
-        self.frame_middle = ttk.Frame(self)
-        self.frame_middle.grid(row=2, column=0, columnspan=2, sticky="ew")        
-        self.rulefields = self._Rule(self.frame_middle, self)
-        self.rulefields.grid(row=2,column=2, columnspan=2, sticky="w")
+        # Frame for some selections in the machine
+        self.frame_bottom03 = ttk.Frame(self)
+        self.frame_bottom03.grid(row=2, column=0, columnspan=2, sticky="ew")
+        self.selections = self._Selections(self.frame_bottom03, self)
+        self.selections.grid(row=3, column=2, columnspan=2, sticky="w")
+        self.selections.load(container.machine)
+        
+        # Frame offering fields to create rules
+        self.frame_bottom02 = ttk.Frame(self)
+        self.frame_bottom02.grid(row=3, column=0, columnspan=2, sticky="ew")        
+        self.rulefields = self._Rule(self.frame_bottom02, self)
+        self.rulefields.grid(row=4, column=2, columnspan=2, sticky="w")
 
         # Frame for control buttons
-        self.frame_bottom = ttk.Frame(self)
-        self.frame_bottom.grid(row=3, column=0, columnspan=2, sticky="ew")        
-        self.buttons = self._Buttons(self.frame_bottom, self)
-        self.buttons.grid(row=3,column=2, columnspan=2, sticky="w")
-
+        self.frame_bottom01 = ttk.Frame(self)
+        self.frame_bottom01.grid(row=4, column=0, columnspan=2, sticky="ew")        
+        self.buttons = self._Buttons(self.frame_bottom01, self)
+        self.buttons.grid(row=5, column=2, columnspan=2, sticky="w")
 
         self.grid(**options)
 
+        self.reload()
+        
+    def reload(self):
+        """ Reload values from the machine to UI objects
+        """
+        machine = self.app.machine
+
+        self.tape.reload()
+        self.selections.reload(machine)
+        self.graph.reload(machine)
+        self.states_and_rules_tree.reload(machine)
+        
     def return_to_start(self):
         """Return the machine to the initial state
         """
         print("return to start") # TODO: Implementation missing
+        self.app.machine.return_to_start()
+
+        self.reload()
         
     def step_forward(self):
         """Performs one Turing machine step
@@ -526,7 +613,8 @@ class JaturingFrame(ttk.Frame):
             self.app.machine.current_state = current_state
 
         self.app.machine.step_forward()
-        self.tape.reload()
+
+        self.reload()
 
     def new_state(self):
         """Create new state to the Turing's machine
@@ -536,6 +624,7 @@ class JaturingFrame(ttk.Frame):
         if not state_name:
             return
         self.app.machine.add_state(state_name)
+
         self.states_and_rules_tree.reload(self.master.machine)
         self.graph.reload(self.master.machine)
         
@@ -547,6 +636,7 @@ class JaturingFrame(ttk.Frame):
         
         self.states_and_rules_tree.reload(self.master.machine)
         self.graph.reload(self.master.machine)
+        self.selections.reload(self.master.machine)
 
     def delete_rule(self):
         """Delete a rule from a state
@@ -621,6 +711,26 @@ class JaturingFrame(ttk.Frame):
 
         self.states_and_rules_tree.reload(self.master.machine)
         self.graph.reload(self.master.machine)
+        self.selections.reload(self.master.machine)
+
+    def set_start_state_to_current(self):
+        """Sets the current state value to the start state.
+        """
+        print("set_start_state_to_current")
+        self.app.machine.set_start_state_to_current()
+        self.selections.reload(self.app.machine)
+        
+    def set_negative_index_allowed(self):
+        """Sets the property of the machine, which indicates if the
+        read/write head of the tape can move left from zero position
+        """
+        if self.selections.left_tape_bool.get():
+            self.app.machine.tape.allow_negative_indexes()
+        else:
+            self.app.machine.tape.deny_negative_indexes()
+
+        self.tape.reload()
+        self.selections.reload(self.app.machine)
         
     def _selected_rule(self):
         """Return the rule which is currently selected from the tree

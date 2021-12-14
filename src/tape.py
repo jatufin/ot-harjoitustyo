@@ -4,7 +4,7 @@ _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 
 class Tape:
-w    """ Tape object containse the actual tape arrays and head position.
+    """ Tape object containse the actual tape arrays and head position.
     If negative head is allowed to move to the left from
     0 position, it is indicted in _negative_index_allowed propert
     Left side and right side tapes from the 0 position are stored to
@@ -34,11 +34,10 @@ w    """ Tape object containse the actual tape arrays and head position.
             self._alphabet = _ALPHABET
         else:
             self._alphabet = alphabet
-            
-        self._negative_index_allowed = negative_index_allowed
 
-        if negative_index_allowed:
-            self._left_tape = arr.array('B', [self._empty])
+        self.negative_index_allowed = negative_index_allowed
+        self._left_tape = arr.array('B', [self._empty])
+        
         if init_string == "":
             init_list = [self._empty]
         else:
@@ -46,6 +45,19 @@ w    """ Tape object containse the actual tape arrays and head position.
         self._right_tape = arr.array('B', init_list)
         self._head_position = 0
 
+    def allow_negative_indexes(self):
+        """Make possible to move read/write head to the left from zero
+        """
+        self.negative_index_allowed = True
+
+    def deny_negative_indexes(self):
+        """Mak impossibile to move read/write head to the left from zero.
+        If there are negative position indices, they are changed to 0
+        """
+        self.negative_index_allowed = False
+        if self._head_position < 0:
+            self._head_position = 0
+            
     def get_head_position(self):
         """Returns the current position of the read/write head
         """
@@ -122,7 +134,7 @@ w    """ Tape object containse the actual tape arrays and head position.
         New empty values are added to the tape array, if needed.
         """
         if (self._head_position == 0 and
-            not self._negative_index_allowed):
+            not self.negative_index_allowed):
             return False
         if self._head_position < 1:
             if len(self._left_tape) == abs(self._head_position):
@@ -149,7 +161,7 @@ w    """ Tape object containse the actual tape arrays and head position.
                     from the tape
         """
         if index < 0:
-            if self._negative_index_allowed:
+            if self.negative_index_allowed:
                 tape = self._left_tape
                 index = abs(index) - 1
             else:
@@ -183,7 +195,7 @@ w    """ Tape object containse the actual tape arrays and head position.
             index : The new position of the head
         """
         if (index < 0 and
-            not self._negative_index_allowed):
+            not self.negative_index_allowed):
             return
 
         if index == self._head_position:
@@ -195,6 +207,12 @@ w    """ Tape object containse the actual tape arrays and head position.
             self.move_right()
         self._go_to(index)
 
+    def return_to_start(self):
+        """Returns the read/write head to starting position,
+        which is currently zero
+        """
+        self._head_position = 0
+        
     def set_value(self, index, value):
         """Sets the value on the tape on given index
         The method checks if movement left from 0 is allowed.
@@ -204,7 +222,7 @@ w    """ Tape object containse the actual tape arrays and head position.
             value : Single character string, which will be written
         """
         if (index < 0 and
-            not self._negative_index_allowed):
+            not self.negative_index_allowed):
             return
 
         head = self._head_position
@@ -223,7 +241,7 @@ w    """ Tape object containse the actual tape arrays and head position.
             String representing the tape
         """
         return_string = ""
-        if self._negative_index_allowed:
+        if self.negative_index_allowed:
             for i in range(len(self._left_tape) - 1, -1, -1):
                 if (self._head_position < 0 and
                    abs(self._head_position) - 1 == i):
@@ -247,8 +265,8 @@ w    """ Tape object containse the actual tape arrays and head position.
             String with JSON data
         """
         return {"head_position": self._head_position,
-                "negative_index_allowed": self._negative_index_allowed,
-                "left_tape": self._left_tape.tolist() if self._negative_index_allowed else None,
+                "negative_index_allowed": self.negative_index_allowed,
+                "left_tape": self._left_tape.tolist(),
                 "right_tape": self._right_tape.tolist()}
 
     def put_dictionary(self, tape_dict):
@@ -261,6 +279,6 @@ w    """ Tape object containse the actual tape arrays and head position.
         """
         self._head_position = tape_dict["head_position"]
         self.negative_index_allowed = tape_dict["negative_index_allowed"]
-        if tape_dict["left_tape"]:
-            self._left_tape = arr.array('B', tape_dict["left_tape"])
+
+        self._left_tape = arr.array('B', tape_dict["left_tape"])
         self._right_tape = arr.array('B', tape_dict["right_tape"])

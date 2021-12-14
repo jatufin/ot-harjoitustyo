@@ -63,6 +63,7 @@ class Jaturing:
             name: String, name of the state
         """
         self._states[name] = State()
+        
         if self.start_state == None:
             self.start_state = name
 
@@ -96,6 +97,11 @@ class Jaturing:
             return None
         return self._states[name]
 
+    def set_start_state_to_current(self):
+        """Sets the current state value to the start state.
+        """
+        self.start_state = self.current_state
+        
     def clear_tape(self):
         """Remove all characters from the tape
         """
@@ -177,6 +183,13 @@ class Jaturing:
 
         self.current_state = rule.next_state
 
+    def return_to_start(self):
+        """Return the machine to start state and read/write head
+        to zero position
+        """
+        self.current_state = self.start_state
+        self.tape.return_to_start()
+        
     def halt(self):
         """Set the machine to halted state
         """
@@ -237,7 +250,8 @@ class Jaturing:
         import_dict = json.loads(json_string)
         
         self._alphabet = import_dict["alphabet"]
-        self._accept_state = import_dict["start_state"]        
+        self.start_state = import_dict["start_state"]
+        self.current_state = self.start_state
         self._accept_state = import_dict["accept_state"]
         self._reject_state = import_dict["reject_state"]
 
