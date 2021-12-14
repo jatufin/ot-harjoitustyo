@@ -21,7 +21,7 @@ Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta aset
 
 1. Nauha, jonka alapuolella luku- ja kirjoituspää / tehty
 2. Käyttäjän muokattavissa olevat tilasiirtymät / tehty
-3. Graafinen esitys tilasiirtymistä
+3. Graafinen esitys tilasiirtymistä / tehty
 4. Ohjauspainikkeet / tehty
 
 ### Komentorivikäyttöliittymä
