@@ -1,54 +1,7 @@
-# Jaturing
-
-**Python-kielellä toteutettu Turingin kone -simulaattori**
-
-Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, ja simuloimaan niiden toimintaa. Sovellus on toteutettu Helsingin yliopiston Tietojenkäsittelytieteen kurssin Ohjelmistotekniikka harjoitustyönä.
-
-### Projektin tila
-* Turingin koneen pääluokat ovat valmiit ja toimivat
-* Graafinen käyttöliittymä toimii
-* Koneen tilan tallennus ja lataus tiedostoon toimivat
-* Tiloja ja niiden välisiä siirtymiä esittävä graafi on upotettu ulkopuolista kirjastoa käyttäen käyttöliittymään
-* Koneen graafista esitystä ulkopuolisia kirjastoja käyttäen ei ole toteutettu
-* Yksikkötestaus on lähes kattava
-
-### Puuttuva toiminnallisuus
-* Komentoriviargumenttien käsittelyä ei ole toteutettu
-* Käyttöliittymä on vielä hieman hiomaton
-
-### Dokumentaatio
-[Käyttöohje](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/kaytto-ohje.md)
-
-[Työaikakirjaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
-
-[Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
-
-[Arkkitehtuuri](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
-### Asennus ja käyttö
-
-* Riippuvuuksien asennus:
-```bash
-poetry install
-```
-
-* Ohjelman käynnistys
-```bash
-poetry run invoke start
-```
-
-* Testaus
-```bash
-poetry run invoke test
-```
-
-* Testikattavuus
-```bash
-poetry run invoke coverage-report
-```
 
 ### Käyttö
 
-![Kuvakaappaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/kuvakaappaus.png)
+![Kuvakaappaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/kuvakaappaus.png)
 
 Ikkunan yläreunassa näkyy Turingin koneen nauha. Luku-kirjoituspään sijainti on korostettu punaisella.
 Jokaisessa solussa on yksi merkki, (mikäli tekstikenttään syöttää pidemmän merkijonon, vain ensimmäinen merkki huomioidaan). Nauhan päässä olevilla nuolipainikkeilla lukupäätä voi siirtää vasemmalle ja oikealle.
