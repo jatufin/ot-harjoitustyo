@@ -285,9 +285,6 @@ class JaturingFrame(ttk.Frame):
             if first_character == self.machine.tape._get_value(tape_index):
                 return
 
-            #if not self.machine.tape._is_in_alphabet(first_character):
-            #    return # TODO: Remove underscore from method name
-
             self.machine.tape.set_value(tape_index, first_character)
             self.load(self.machine)
             
@@ -463,7 +460,6 @@ class JaturingFrame(ttk.Frame):
                              ax=self.axis)
 
             edge_labels = nx.get_edge_attributes(self.graph, 'title')
-            print(f"Edge labels: {edge_labels}")
 
             nx.draw_networkx_edge_labels(self.graph,
                                          pos=pos,
@@ -597,7 +593,6 @@ class JaturingFrame(ttk.Frame):
     def return_to_start(self):
         """Return the machine to the initial state
         """
-        print("return to start") # TODO: Implementation missing
         self.app.machine.return_to_start()
 
         self.reload()
@@ -625,8 +620,7 @@ class JaturingFrame(ttk.Frame):
             return
         self.app.machine.add_state(state_name)
 
-        self.states_and_rules_tree.reload(self.master.machine)
-        self.graph.reload(self.master.machine)
+        self.reload()
         
     def delete_state(self):
         """Delete a state from the Turing's machine
@@ -634,9 +628,7 @@ class JaturingFrame(ttk.Frame):
         state_name = self._selected_state()
         self.app.machine.delete_state(state_name)
         
-        self.states_and_rules_tree.reload(self.master.machine)
-        self.graph.reload(self.master.machine)
-        self.selections.reload(self.master.machine)
+        self.reload()
 
     def delete_rule(self):
         """Delete a rule from a state
@@ -648,17 +640,11 @@ class JaturingFrame(ttk.Frame):
         state = self._selected_state()
         self.app.machine.delete_rule(state, rule)
 
-        self.states_and_rules_tree.reload(self.master.machine)
-        self.graph.reload(self.master.machine)
+        self.reload()
 
     def add_rule(self):
         """ Add new rule for a state
         """
-        # TODO: remove
-        #state_name = self._selected_state()
-        #if state_name is None:
-        #    messagebox.showinfo(title="No state", message="No state selected")
-        #    return
         state_name = self._selected_state()
         character = self.rulefields.character.get()
         write_char = self.rulefields.write_char.get()
@@ -667,8 +653,7 @@ class JaturingFrame(ttk.Frame):
 
         self.app.machine.set_rule(state_name, character, write_char, direction, new_state)
         
-        self.states_and_rules_tree.reload(self.master.machine)
-        self.graph.reload(self.master.machine)
+        self.reload()
 
     def save_file(self):
         """Convert the current machine to a JSON string and save it to a file
@@ -709,16 +694,14 @@ class JaturingFrame(ttk.Frame):
         self.app.machine.current_state = state_name
         self.rulefields.state.set(state_name)
 
-        self.states_and_rules_tree.reload(self.master.machine)
-        self.graph.reload(self.master.machine)
-        self.selections.reload(self.master.machine)
+        self.reload()
 
     def set_start_state_to_current(self):
         """Sets the current state value to the start state.
         """
-        print("set_start_state_to_current")
         self.app.machine.set_start_state_to_current()
-        self.selections.reload(self.app.machine)
+
+        self.reload()
         
     def set_negative_index_allowed(self):
         """Sets the property of the machine, which indicates if the
@@ -729,8 +712,7 @@ class JaturingFrame(ttk.Frame):
         else:
             self.app.machine.tape.deny_negative_indexes()
 
-        self.tape.reload()
-        self.selections.reload(self.app.machine)
+        self.reload()
         
     def _selected_rule(self):
         """Return the rule which is currently selected from the tree
