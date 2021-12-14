@@ -37,7 +37,7 @@ class Tape:
 
         self.negative_index_allowed = negative_index_allowed
         self._left_tape = arr.array('B', [self._empty])
-        
+
         if init_string == "":
             init_list = [self._empty]
         else:
@@ -57,7 +57,7 @@ class Tape:
         self.negative_index_allowed = False
         if self._head_position < 0:
             self._head_position = 0
-            
+
     def get_head_position(self):
         """Returns the current position of the read/write head
         """
@@ -70,7 +70,7 @@ class Tape:
             alphabet : String containing the caracters of the alphabet
         """
         self._alphabet = alphabet
-        
+
     def read(self):
         """Returns the character in the tape on the current position
         of the read/write head.
@@ -190,7 +190,7 @@ class Tape:
     def _go_to(self, index):
         """Moves the read/write head to the given position
         The method checks if movement left from 0 is allowed.
-        
+
         Args:
             index : The new position of the head
         """
@@ -212,11 +212,11 @@ class Tape:
         which is currently zero
         """
         self._head_position = 0
-        
+
     def set_value(self, index, value):
         """Sets the value on the tape on given index
         The method checks if movement left from 0 is allowed.
-        
+
         Args:
             index : Integer position where the value will be written
             value : Single character string, which will be written

@@ -20,7 +20,7 @@ class Jaturing:
 
         self.init_states()
         self.halted = False
-        
+
     @property
     def states(self):
         """ States of the Turing's machine
@@ -49,7 +49,7 @@ class Jaturing:
         self._states = {}
         self.current_state = None
         self.start_state = None
-        
+
         self._accept_state = "ACCEPT"
         self.add_state(self._accept_state)
 
@@ -63,7 +63,7 @@ class Jaturing:
             name: String, name of the state
         """
         self._states[name] = State()
-        
+
         if self.start_state == None:
             self.start_state = name
 
@@ -79,7 +79,7 @@ class Jaturing:
         if not name in self._states:
             return
         if self.start_state == name:
-            self.start_state = None        
+            self.start_state = None
         if self.current_state == name:
             self.current_state = None
         self.states.pop(name)
@@ -101,12 +101,12 @@ class Jaturing:
         """Sets the current state value to the start state.
         """
         self.start_state = self.current_state
-        
+
     def clear_tape(self):
         """Remove all characters from the tape
         """
-        self._tape = Tape(self._alphabet)        
-            
+        self._tape = Tape(self._alphabet)
+
     def set_rule(self, state_name,
                  character,
                  write_char,
@@ -165,11 +165,11 @@ class Jaturing:
         if self.current_state == self._reject_state:
             self.halt()
             return
-        
+
         if self.current_state == self._accept_state:
             self.halt()
             return
-        
+
         if not rule:
             self.halt()
             return
@@ -189,7 +189,7 @@ class Jaturing:
         """
         self.current_state = self.start_state
         self.tape.return_to_start()
-        
+
     def halt(self):
         """Set the machine to halted state
         """
@@ -228,9 +228,9 @@ class Jaturing:
         """
         self.init_states()
         self.clear_tape()
-        
+
         import_dict = json.loads(json_string)
-        
+
         self._alphabet = import_dict["alphabet"]
         self.start_state = import_dict["start_state"]
         self.current_state = self.start_state
@@ -241,7 +241,7 @@ class Jaturing:
         self._tape.put_dictionary(tape)
 
         states = import_dict["states"]
-        
+
         for state_name, rules_dict in states.items():
             rules = rules_dict["rules"]
             for character, rule in rules.items():
@@ -251,14 +251,14 @@ class Jaturing:
                               direction = rule["direction"],
                               next_state = rule["next_state"])
 
-                
+
 def main():
     argc = len(sys.argv)
     args = sys.argv[1:]
-    
+
     jaturing = Jaturing()
 
-    # If no args, start GUI application    
+    # If no args, start GUI application
     if(argc == 1):
         launch(jaturing)
 

@@ -32,7 +32,7 @@ class State:
     def get_rule(self, character):
         """Get the rule which will be applied if this character is read
         when the machine is in this state
-        
+
         Args:
             character : Single character string
 
@@ -46,7 +46,7 @@ class State:
     def delete_rule(self, rule):
         """Delete the rule which would had been applied when this character
         was read had the machine been in this state
-        
+
         Args:
             character : Single character string
         """
@@ -67,8 +67,8 @@ class State:
                                "direction": rule.direction,
                                "write_char": rule.write_char}
         return dict
-         
-        
+
+
     @property
     def rules(self):
         """Returns all the rules this state has
