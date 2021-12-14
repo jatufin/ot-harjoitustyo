@@ -199,24 +199,6 @@ class Jaturing:
         """Remove the machine from halted state
         """
         self.halted = False
-        
-    def print_states_and_rules(self):
-        """Print states and rules to standard output
-        """
-        print("STATUS")
-        print(f"Tape: {str(self._tape)}")
-        print(f"Current state: {self.current_state}")
-        print(f"Start state: {self.start_state}")
-        print(f"Accept state: {self._accept_state}")
-        print(f"Reject state: {self._reject_state}")
-        print("States and rules:")
-        if len(self._states) == 0:
-            print("  << no states >>")
-        for name, state in self._states.items():
-            print(f"State: {name}")
-            for character, rule in self.get_state(name).rules.items():
-                print(f"'{character}' : ", end='')
-                rule.print_rule()
 
     def exportJSON(self):
         """Create JSON string, which contains all the states, rules, tape
