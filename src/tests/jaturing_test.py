@@ -81,9 +81,152 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.delete_state('q1')
         self.assertEqual(self.jaturing.current_state, None)
 
-    def test_export_json_generates_proper_json_string(self):
-        correct_json = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "start_state": null, "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": null, "right_tape": [97]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
+    def test_deleting_start_state_sets_start_state_to_none(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q2")
+        self.jaturing.start_state = "q1"
+        self.jaturing.delete_state('q1')
+        self.assertEqual(self.jaturing.start_state, None)
+
+    def test_setting_start_state_to_current_state_works(self):
+        self.jaturing.start_state = "ACCEPT"
+        self.jaturing.current_state = "REJECT"
+        self.jaturing.set_start_state_to_current()
+        self.assertEqual(self.jaturing.start_state, "REJECT")
+
+    def test_deleting_existing_rule_deletes_rule(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q2")
+        self.jaturing.delete_rule('q1', 'a')
+        self.assertNotIn ("a", str(self.jaturing.get_state("q1").rules))
+
+    def test_deleteing_rule_for_nonexistent_state_deletes_nothing(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q2")
+        before = str(self.jaturing)
+        self.jaturing.delete_rule('q2', 'a')
+        after = str(self.jaturing)
+        self.assertEqual(before, after)
+
+    def test_step_forward_changes_state_correctlt(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q2")
+        self.jaturing.set_rule(state_name="q2",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="q2")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(0, 'a')
+        self.jaturing.step_forward()
+        self.assertEqual(self.jaturing.current_state, "q2")
+
+    def test_step_forward_to_accept_state_halts(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="ACCEPT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(0, 'a')
+        self.jaturing.step_forward()
+        self.jaturing.step_forward()        
+        self.assertTrue(self.jaturing.halted)
+
+    def test_step_forward_to_reject_state_halts(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="REJECT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(0, 'a')
+        self.jaturing.step_forward()
+        self.jaturing.step_forward()        
+        self.assertTrue(self.jaturing.halted)
+
+    def test_step_forward_without_rule_halts(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="REJECT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(0, 'b')
+        self.jaturing.step_forward()
+        self.jaturing.step_forward()        
+        self.assertTrue(self.jaturing.halted)
+
+    def test_step_forward_with_move_right_moves_right(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="RIGHT",
+                               next_state="REJECT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(0, 'a')
+        self.jaturing.step_forward()
+        self.assertEqual(self.jaturing.tape._head_position, 1)
+
+    def test_step_forward_with_move_left_moves_left(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="LEFT",
+                               next_state="REJECT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(1, 'a')
+        self.jaturing.tape._head_position = 1
+        self.jaturing.step_forward()
+        self.assertEqual(self.jaturing.tape._head_position, 0)
+
+    def test_step_forward_with_unknow_direction_rule_moves_nothing(self):
+        self.jaturing.set_rule(state_name="q1",
+                               character="a",
+                               write_char="A",
+                               direction="X",
+                               next_state="REJECT")
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape.set_value(1, 'a')
+        self.jaturing.tape._head_position = 1
+        self.jaturing.step_forward()
+        self.assertEqual(self.jaturing.tape._head_position, 1)
+
+    def test_return_to_start_returns_to_start(self):
+        self.jaturing.start_state = "q0"
+        self.jaturing.current_state = "q1"
+        self.jaturing.tape._head_position = 5
+        self.jaturing.return_to_start()
+        self.assertEqual(self.jaturing.current_state, "q0")
+        self.assertEqual(self.jaturing.tape._head_position, 0)
+
+    def test_halt_halts(self):
+        self.jaturing.halt()
+        self.assertTrue(self.jaturing.halted)
         
+    def test_unhalt_unhalts(self):
+        self.jaturing.halt()
+        self.jaturing.unhalt()
+        self.assertFalse(self.jaturing.halted)        
+
+    def print_states_and_rules(self):
+        self.assertTrue(True)
+        
+    def test_export_json_generates_proper_json_string(self):
+        correct_json = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "start_state": "ACCEPT", "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": [46], "right_tape": [97]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
+
         self.jaturing.set_rule(state_name="q0",
                                character="a",
                                write_char="A",
@@ -99,7 +242,7 @@ class TestJaturing(unittest.TestCase):
         self.assertEqual(self.jaturing.exportJSON(), correct_json)
 
     def test_import_json_produces_correct_machine(self):
-        json_in = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "start_state": null, "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": null, "right_tape": [97]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
+        json_in = '{"alphabet": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "start_state": "ACCEPT", "accept_state": "ACCEPT", "reject_state": "REJECT", "tape": {"head_position": 0, "negative_index_allowed": false, "left_tape": [46], "right_tape": [97]}, "states": {"ACCEPT": {"rules": {}}, "REJECT": {"rules": {}}, "q0": {"rules": {"a": {"next_state": "q1", "direction": "RIGHT", "write_char": "A"}, "b": {"next_state": "q1", "direction": "RIGHT", "write_char": "B"}}}}}'
         self.jaturing.importJSON(json_in)
         json_out = self.jaturing.exportJSON()
         self.assertEqual(json_in, json_out)

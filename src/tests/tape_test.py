@@ -11,9 +11,26 @@ class TestTape(unittest.TestCase):
         self.full_tape_initialized = Tape(init_string="abc",
                                           negative_index_allowed=True)
 
+    def test_allowing_negative_indexes_allows_negative_indexes(self):
+        self.basic_tape.allow_negative_indexes()
+        self.assertEqual(self.basic_tape.negative_index_allowed, True)
+
+    def test_denying_negative_indexes_denies_negative_indexes(self):
+        self.full_tape.deny_negative_indexes()
+        self.assertEqual(self.full_tape.negative_index_allowed, False)
+
+    def test_denying_negative_indexes_moves_head_to_zero_position(self):
+        self.full_tape._head_position = -1
+        self.full_tape.deny_negative_indexes()
+        self.assertEqual(self.full_tape._head_position, 0)
+        
     def test_get_head_position_returns_value(self):
         self.assertEqual(self.basic_tape.get_head_position(), 0)
-    
+
+    def test_setting_alphabe_sets_alphabet(self):
+        self.basic_tape.set_alphabet("ABC")
+        self.assertEqual(self.basic_tape._alphabet, "ABC")
+        
     def test_init_with_custom_alphabet_works(self):
         tape = Tape(alphabet="1234567890")
         self.assertEqual(str(tape), "|>")
@@ -112,6 +129,10 @@ class TestTape(unittest.TestCase):
     def test_get_value_from_intialized_returns_correct_empty_value(self):
         self.assertEqual(self.full_tape_initialized._get_value(-3), ".")
 
+    def test_get_value_from_negative_when_negative_not_allowed_returns_dot(self):
+        value = self.basic_tape._get_value(-1)
+        self.assertEqual(value, ".")
+        
     def test_get_slice_returns_correct_list(self):
         slice = self.full_tape_initialized.get_slice(3)
         self.assertEqual(slice, [(-3, "."), (-2, "."), (-1, "."), (0, "a"), (1, "b"), (2, "c")])
