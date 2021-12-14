@@ -312,8 +312,9 @@ class JaturingFrame(ttk.Frame):
 
             nx.draw_networkx_edge_labels(self.graph,
                                          pos=pos,
-                                         edge_labels=edge_labels)            
-
+                                         edge_labels=edge_labels,
+                                         font_size=1000)            
+            
             self.figure_canvas.draw()
             plt.close()
             
@@ -335,14 +336,27 @@ class JaturingFrame(ttk.Frame):
 
             """
             for state_name in machine.states.keys():
+                if state_name == machine._accept_state:
+                    color_map.append('green')
+                    size_map.append(2000)
+                    self.graph.add_node(state_name)
+                    continue
+                
+                if state_name == machine._reject_state:
+                    color_map.append('red')
+                    size_map.append(2000)
+                    self.graph.add_node(state_name)
+                    continue
+                
                 if state_name == machine.current_state:
-                    color_map.append('gray')
-                    size_map.append(1000)
-                    self.graph.add_node(state_name)
-                else:
                     color_map.append('pink')
-                    size_map.append(5000)
+                    size_map.append(500)
                     self.graph.add_node(state_name)
+                    continue
+
+                color_map.append('gray')
+                size_map.append(500)
+                self.graph.add_node(state_name) 
 
         def _add_rule_edges(self, machine):
             """
