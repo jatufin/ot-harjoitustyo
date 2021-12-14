@@ -307,6 +307,8 @@ class JaturingFrame(ttk.Frame):
  
         
     def step_forward(self):
+        """ Performs one Turing machine step
+        """
         if self.app.machine.current_state == None:
             current_state = self._selected_state()
             if not current_state:
@@ -318,6 +320,8 @@ class JaturingFrame(ttk.Frame):
         self.tape.reload()
 
     def new_state(self):
+        """ Create new state to the Turing's machine
+        """
         state_name = simpledialog.askstring(title="New state",
                                             prompt="Name of the new state")
         if not state_name:
@@ -326,11 +330,15 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.reload(self.master.machine)
         
     def delete_state(self):
+        """ Delete a state from the Turing's machine
+        """
         state_name = self._selected_state()
         self.app.machine.delete_state(state_name)
         self.states_and_rules_tree.reload(self.master.machine)
 
     def delete_rule(self):
+        """ Delete a rule from a state
+        """
         rule = self._selected_rule()
         if rule is None:
             messagebox.showinfo(title="No rule", message="No rule to delete")
@@ -340,6 +348,8 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.reload(self.master.machine)        
 
     def add_rule(self):
+        """ Add new rule for a state
+        """
         # TODO: remove
         #state_name = self._selected_state()
         #if state_name is None:
@@ -355,6 +365,8 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.reload(self.master.machine)                
 
     def save_file(self):
+        """ Convert the current machine to a JSON string and save it to a file
+        """
         json_string = self.app.machine.exportJSON()
 
         f = filedialog.asksaveasfile(mode="w",
@@ -370,6 +382,8 @@ class JaturingFrame(ttk.Frame):
         f.close()
         
     def load_file(self):
+        """ Load previously saved JSON formatted Turing's machine from a file
+        """
         f = filedialog.askopenfile(mode="r",
                                    defaultextension=".json",
                                    filetypes=[("JSON files", "*.json"),
@@ -381,15 +395,21 @@ class JaturingFrame(ttk.Frame):
         self.app.refresh()
 
     def set_current_state(self, state):
+        """ Change Turing's machine's current
+        """
         self.app.machine.current_state = state
         self.rulefields.state.set(state)
         
     def _selected_rule(self):
+        """ Return the rule which is currently selected from the tree
+        """
         selected_rule = self.states_and_rules_tree.tree.focus().split(";")
         if not len(selected_rule) == 2:
             return None
-        return selected_rule[1] # rule iid in the TreeView is "state;rule"
+        return selected_rule[1]  # rule iid in the TreeView is "state;rule"
 
     def _selected_state(self):
+        """ Return the state which is currently selected from the tree
+        """
         return self.rulefields.state.get()
 
