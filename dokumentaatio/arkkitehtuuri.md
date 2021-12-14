@@ -6,13 +6,11 @@
 
 ### Dokumentaatio
 
-Dokumentaatio sisältää projektihakemistossa sijaitsevan ```README.md```-tiedoston, sekä ```Dokumentaatio-hakemistossa``` sijaitsevat dokumentit:
+* [README](https://github.com/jatufin/ot-harjoitustyo/blob/master/README.md) sisältää esittelyn, sekä ohjeen ohjelman asennukseen ja käynnistämiseen
 
-[Työaikakirjaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
+* [Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md) On toiminut toteutuksen perustana, mutta sitä ei ole seurattu, eikä päivitetty orjallisesti.
 
-[Määrittelydokumentti](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
-
-[Arkkitehtuuri](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
+* Tämä dokumentti, eli [Arkkitehtuuri](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md) sisältää tarkemman kuvauksen ohjelman sisäisestä toiminnasta.
 
 ### Lähdekoodi:
 ```
