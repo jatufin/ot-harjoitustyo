@@ -6,6 +6,13 @@ from tkinter import simpledialog
 from tkinter import filedialog
 from tkinter import OptionMenu
 
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+
+import networkx as nx
 
 class JaturingFrame(ttk.Frame):
     class _Buttons(ttk.Frame):
@@ -257,6 +264,113 @@ class JaturingFrame(ttk.Frame):
             for branch in top_branches:
                 self.tree.item(branch, open=True)
                 
+    class _Graph(ttk.Frame):
+        """ Graphical representation of the states
+        """
+        def __init__(self, master, root_frame):
+            super().__init__(master)
+            self.root_frame = root_frame
+
+            self.figure_canvas = None
+
+        def load(self, machine):
+            if self.figure_canvas:
+                self.figure_canvas.get_tk_widget().destroy()
+            self.figure = plt.Figure(figsize=(8,6), dpi=100)
+            self.axis = self.figure.add_subplot(111)
+            plt.axis('off')
+
+            
+            # Drawing the graph using networkx library
+            self.graph = nx.DiGraph()
+
+            # Drawing area
+            self.figure_canvas = FigureCanvasTkAgg(self.figure, self)
+            self.figure_canvas.draw()
+            self.figure_canvas.get_tk_widget().pack(side='bottom',
+                                                    fill='both',
+                                                    expand=1)
+
+            color_map = []
+            size_map = []
+            self._add_state_nodes(machine, color_map, size_map)
+            self._add_rule_edges(machine)
+
+            #pos=nx.spring_layout(self.graph),
+            pos=nx.planar_layout(self.graph)
+            
+
+            nx.draw_networkx(self.graph,
+                             pos=pos,
+                             with_labels=True,
+                             node_color=color_map,
+                             node_size=size_map,
+                             ax=self.axis)
+
+            edge_labels = nx.get_edge_attributes(self.graph, 'title')
+            print(f"Edge labels: {edge_labels}")
+
+            nx.draw_networkx_edge_labels(self.graph,
+                                         pos=pos,
+                                         edge_labels=edge_labels)            
+
+            self.figure_canvas.draw()
+            plt.close()
+            
+        def reload(self, machine):
+            self.load(machine)
+
+        def _add_state_nodes(self, machine, color_map, size_map):
+            """
+            Creates nodes which represent the states of the machine.
+
+            Parameters
+            ----------
+            machine : Jaturing
+                The Turing's machine object.
+
+            Returns
+            -------
+            None
+
+            """
+            for state_name in machine.states.keys():
+                if state_name == machine.current_state:
+                    color_map.append('gray')
+                    size_map.append(1000)
+                    self.graph.add_node(state_name)
+                else:
+                    color_map.append('pink')
+                    size_map.append(5000)
+                    self.graph.add_node(state_name)
+
+        def _add_rule_edges(self, machine):
+            """
+            Creates edges connecting the nodes. Each edge represents
+            a rule in the machine
+
+            Parameters
+            ----------
+            machine : Jaturing
+                The Turing's machine object.
+
+            Returns
+            -------
+            None
+
+            """
+            
+            for state_name, state in machine.states.items():
+                start = state_name
+                for character, rule in state.rules.items():
+                    end = rule.next_state
+
+                    # Rule has an end state, which doesn't exist
+                    if end not in machine.states.keys():
+                        continue
+                    label = f"if '{character}' write '{rule.write_char}' move: {rule.direction}"
+                    self.graph.add_edge(start, end, title=label)
+
     def __init__(self, container):
         """ Main JaturingFrame frame initializer
         """
@@ -279,9 +393,12 @@ class JaturingFrame(ttk.Frame):
         self.states_and_rules_tree.pack()
         self.states_and_rules_tree.load(container.machine.states)
 
-        # Frame for graphical represetntation of the states
-        # self.frame_right = ttk.Frame(self)
-        # self.frame_right.grid(row=1, column=1)
+        # Frame for graphical representation of the states
+        self.frame_right = ttk.Frame(self)
+        self.frame_right.grid(row=1, column=1)
+        self.graph = self._Graph(self.frame_right, self)
+        self.graph.pack()
+        self.graph.load(container.machine)
 
         # Frame below the tree and graph offering fields to create rules
         self.frame_middle = ttk.Frame(self)
@@ -328,13 +445,16 @@ class JaturingFrame(ttk.Frame):
             return
         self.app.machine.add_state(state_name)
         self.states_and_rules_tree.reload(self.master.machine)
+        self.graph.reload(self.master.machine)
         
     def delete_state(self):
         """ Delete a state from the Turing's machine
         """
         state_name = self._selected_state()
         self.app.machine.delete_state(state_name)
+        
         self.states_and_rules_tree.reload(self.master.machine)
+        self.graph.reload(self.master.machine)
 
     def delete_rule(self):
         """ Delete a rule from a state
@@ -345,7 +465,9 @@ class JaturingFrame(ttk.Frame):
             return
         state = self._selected_state()
         self.app.machine.delete_rule(state, rule)
-        self.states_and_rules_tree.reload(self.master.machine)        
+
+        self.states_and_rules_tree.reload(self.master.machine)
+        self.graph.reload(self.master.machine)
 
     def add_rule(self):
         """ Add new rule for a state
@@ -362,7 +484,9 @@ class JaturingFrame(ttk.Frame):
         new_state = self.rulefields.new_state.get()
 
         self.app.machine.set_rule(state_name, character, write_char, direction, new_state)
-        self.states_and_rules_tree.reload(self.master.machine)                
+        
+        self.states_and_rules_tree.reload(self.master.machine)
+        self.graph.reload(self.master.machine)
 
     def save_file(self):
         """ Convert the current machine to a JSON string and save it to a file
@@ -394,11 +518,23 @@ class JaturingFrame(ttk.Frame):
         self.app.machine.importJSON(json_string)
         self.app.refresh()
 
-    def set_current_state(self, state):
-        """ Change Turing's machine's current
+    def set_current_state(self, state_name):
+        """ Change Turing's machine's current state
+
+        Parameters
+        ----------
+        state_name : str
+            The name of the new state
+
+        Returns
+        -------
+        None
         """
-        self.app.machine.current_state = state
-        self.rulefields.state.set(state)
+        self.app.machine.current_state = state_name
+        self.rulefields.state.set(state_name)
+
+        self.states_and_rules_tree.reload(self.master.machine)
+        self.graph.reload(self.master.machine)
         
     def _selected_rule(self):
         """ Return the rule which is currently selected from the tree

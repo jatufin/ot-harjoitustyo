@@ -7,6 +7,8 @@ authors = ["Janne Tuukkanen <jatufin@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 invoke = "^1.6.0"
+matplotlib = "^3.5.1"
+networkx = "^2.6.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

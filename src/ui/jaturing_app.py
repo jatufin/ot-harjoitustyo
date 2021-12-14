@@ -10,7 +10,7 @@ class JaturingApp(Tk):
     def __init__(self, machine):
         super().__init__()
         self.title("Jaturing Turing's machine emulator")
-        self.geometry("800x600")
+        # self.geometry("800x600")
         # self.resizable(False, False)
 
         self.set_style()

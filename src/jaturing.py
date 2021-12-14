@@ -23,16 +23,52 @@ class Jaturing:
         
     @property
     def states(self):
+        """
+        The states of the machine are stored in a dictionary object, wehere
+        the names of the states are keys, and State objects values.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        states : { str : State }
+        """
         return self._states
 
     @property
     def tape(self):
+        """
+        Tape of the machine is stored in a Tape object
+
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        tape : Tape
+        """
         return self._tape
 
     def init_states(self):
-        ''' Initially the mahcine has always two halting states:
-        ACCEPT and REJECT.
-        '''
+        """ Initially the mahcine has always two halting states:
+        Initialize the states of a new Turing's machine.
+        Two initial actual states are ACCEPT and REJECT, an they are stored
+        in the _states dictionary.
+        Additionally the machine has internal pointers to states, such as the
+        self.current_state.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self._states = {}
         self.current_state = None
         self.start_state = None
@@ -44,21 +80,75 @@ class Jaturing:
         self.add_state(self._reject_state)
 
     def add_state(self, name):
+        """ Add a state to the Turing's machine
+
+        Parameters
+        ----------
+        name : str
+            Name of the state
+
+        Returns
+        -------
+        None
+        """
         self._states[name] = State()
+        if self.start_state == None:
+            self.start_state = name
+
+        if self.current_state == None:
+            self.current_state = name
 
     def delete_state(self, name):
+        """
+        Delete the given state from the Turing's machine
+
+        Parameters
+        ----------
+        name : str
+            Name of the state
+
+        Returns
+        -------
+        None
+        """
         if not name in self._states:
             return
+        if self.start_state == name:
+            self.start_state = None        
         if self.current_state == name:
             self.current_state = None
         self.states.pop(name)
 
     def get_state(self, name):
-        if not name in self._states:
+        """
+        Return the State object by the name of the state
+
+        Parameters
+        ----------
+        name : str
+            Name of the state
+
+        Returns
+        -------
+        state : State
+            State object
+        """
+        if name not in self._states:
             return None
         return self._states[name]
 
     def clear_tape(self):
+        """
+        Remove all characters from the tape
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self._tape = Tape(self._alphabet)        
             
     def set_rule(self, state_name,
@@ -67,13 +157,29 @@ class Jaturing:
                  direction,
                  next_state
                  ):
-        ''' Rule needs following information:
-        state_name - Current state, where the rule is applied
-        character - The character which is read from the tape, and which triggers the rule
-        write_char - The character which should be written to the current position
-        of the state
-        directien - Where the tape should be moved after writing the character: LEFT or RIGHT
-        next_state - The new state after this operation        '''
+        """
+        Create a new rule for a state
+
+        Parameters
+        ----------
+        state_name : str
+            The state where the rule is applied
+        character : str
+            Single character. The rule is applied if this character is read from the tape,
+            when the machine is in the state_name state
+        write_char : str
+            Single character, which will be written to the tape. It will overwrite the
+            character, which had been raed from the tape
+        direction : str
+            To which direction the read/write head will be moved.
+            Allowed values are: LEFT and RIGHT
+        next_state : str
+            The new state the machine will be after this rule has been applied
+
+        Returns
+        -------
+        None
+        """
         if not self.get_state(state_name):
             self.add_state(state_name)
         self.get_state(state_name).set_rule(character=character,
@@ -83,6 +189,8 @@ class Jaturing:
                                             )
 
     def delete_rule(self, state, rule):
+        """ Delete a rule from the state
+        """
         if not state in self._states:
             return
         self._states[state].delete_rule(rule)
