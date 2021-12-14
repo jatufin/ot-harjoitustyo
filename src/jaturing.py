@@ -10,11 +10,11 @@ _ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 
 class Jaturing:
-    """ Main class of the Jaturing Turing's machine
-    The tape of the machine is kept in self._tape object
-    and states with transition rules are in self._states dictionary
+    """Main class of the Turing's machine
     """
     def __init__(self):
+        """ Constructor for the Jaturing class
+        """
         self._alphabet = _ALPHABET
         self._tape = Tape(self._alphabet)
 
@@ -23,51 +23,28 @@ class Jaturing:
         
     @property
     def states(self):
-        """
-        The states of the machine are stored in a dictionary object, wehere
-        the names of the states are keys, and State objects values.
+        """ States of the Turing's machine
 
-        Parameters
-        ----------
-        None
-
-        Returns
+        Returns:
+            Dictionary, where state names are keys, and values are State objects
         -------
-        states : { str : State }
         """
         return self._states
 
     @property
     def tape(self):
-        """
-        Tape of the machine is stored in a Tape object
+        """Returns the tape of the machine
 
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        tape : Tape
+        Returns:
+             Tape object
         """
         return self._tape
 
     def init_states(self):
-        """ Initially the mahcine has always two halting states:
-        Initialize the states of a new Turing's machine.
-        Two initial actual states are ACCEPT and REJECT, an they are stored
-        in the _states dictionary.
+        """Initializes the machine states
+        Initially the mahcine has always two halting states: ACCEPT and REJECT
         Additionally the machine has internal pointers to states, such as the
         self.current_state.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
         """
         self._states = {}
         self.current_state = None
@@ -80,16 +57,10 @@ class Jaturing:
         self.add_state(self._reject_state)
 
     def add_state(self, name):
-        """ Add a state to the Turing's machine
+        """Add a state to the Turing's machine
 
-        Parameters
-        ----------
-        name : str
-            Name of the state
-
-        Returns
-        -------
-        None
+        Args:
+            name: String, name of the state
         """
         self._states[name] = State()
         if self.start_state == None:
@@ -99,17 +70,10 @@ class Jaturing:
             self.current_state = name
 
     def delete_state(self, name):
-        """
-        Delete the given state from the Turing's machine
+        """Delete the given state from the Turing's machine
 
-        Parameters
-        ----------
-        name : str
-            Name of the state
-
-        Returns
-        -------
-        None
+        Args:
+            name : String, name of the state
         """
         if not name in self._states:
             return
@@ -120,17 +84,12 @@ class Jaturing:
         self.states.pop(name)
 
     def get_state(self, name):
-        """
-        Return the State object by the name of the state
+        """Return the State object by the name of the state
 
-        Parameters
-        ----------
-        name : str
-            Name of the state
+        Args:
+            name : String, name of the state
 
-        Returns
-        -------
-        state : State
+        Returns:
             State object
         """
         if name not in self._states:
@@ -138,16 +97,7 @@ class Jaturing:
         return self._states[name]
 
     def clear_tape(self):
-        """
-        Remove all characters from the tape
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
+        """Remove all characters from the tape
         """
         self._tape = Tape(self._alphabet)        
             
@@ -160,25 +110,17 @@ class Jaturing:
         """
         Create a new rule for a state
 
-        Parameters
-        ----------
-        state_name : str
-            The state where the rule is applied
-        character : str
-            Single character. The rule is applied if this character is read from the tape,
-            when the machine is in the state_name state
-        write_char : str
-            Single character, which will be written to the tape. It will overwrite the
-            character, which had been raed from the tape
-        direction : str
-            To which direction the read/write head will be moved.
-            Allowed values are: LEFT and RIGHT
-        next_state : str
-            The new state the machine will be after this rule has been applied
-
-        Returns
-        -------
-        None
+        Args:
+            state_name : String, the state where the rule is applied
+            character :  Single character string,. The rule is applied if this
+                         character is read from the tape
+            write_char : Single character string, which will be written to the
+                         tape. It will overwrite the character, which had been
+                         read from the tape
+            direction :  String. To which direction the read/write head will be moved.
+                         Allowed values are: LEFT and RIGHT
+            next_state : String.The new state, the machine will be after this
+                         rule has been applied
         """
         if not self.get_state(state_name):
             self.add_state(state_name)
@@ -190,15 +132,26 @@ class Jaturing:
 
     def delete_rule(self, state, rule):
         """ Delete a rule from the state
+
+        Args:
+            state : String, state name
+            rule : Single character string
         """
         if not state in self._states:
             return
         self._states[state].delete_rule(rule)
 
     def is_accept_or_reject(self, state):
+        """Return True if the given state is ACCEPT or REJECT state
+
+        args:
+            state : String containing the state name
+        """
         return state in (self._accept_state, self._reject_state)
 
     def step_forward(self):
+        """Perform one step of the machine applying rule from the current state
+        """
         character = self.tape.read()
         state = self.get_state(self.current_state)
         rule = state.get_rule(character)
@@ -225,12 +178,18 @@ class Jaturing:
         self.current_state = rule.next_state
 
     def halt(self):
+        """Set the machine to halted state
+        """
         self.halted = True
 
     def unhalt(self):
+        """Remove the machine from halted state
+        """
         self.halted = False
         
     def print_states_and_rules(self):
+        """Print states and rules to standard output
+        """
         print("STATUS")
         print(f"Tape: {str(self._tape)}")
         print(f"Current state: {self.current_state}")
@@ -247,6 +206,9 @@ class Jaturing:
                 rule.print_rule()
 
     def exportJSON(self):
+        """Create JSON string, which contains all the states, rules, tape
+        and current state of the machine
+        """
         states_dict = {}
         for state_name, state in self._states.items():
             rules = state.get_rules_in_dictionary()
@@ -263,6 +225,12 @@ class Jaturing:
 
 
     def importJSON(self, json_string):
+        """Read the given JSON string and build the machine from it
+
+        Args:
+            json_string : String containing all the states, rules and tape of
+                          the machine
+        """
         self.init_states()
         self.clear_tape()
         
