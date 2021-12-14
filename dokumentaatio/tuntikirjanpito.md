@@ -9,6 +9,7 @@
 | 30.11. | 13   | GUI, toiminta ja yksikkötestaus |
 | 07.12. | 8    | GUI, yksikkötestaus | 
 | 08.12. | 3    | JSON export ja import, lataus ja tallennus. GUI-korjauksia |
-| 09.12. | 3    | Bug fixes, features and GUI refining |
+| 09.12. | 3    | Bugien korjausta, käyttöliittymän ja ominaisuuksien hiomista |
+| 14.12. | 16   | Graafin toteuttaminen NetworkX-kirjastolla, bugien korjausta |
 
-Tunteja yhteensä: 41
+Tunteja yhteensä: 57
