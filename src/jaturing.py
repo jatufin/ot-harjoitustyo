@@ -5,8 +5,9 @@ from ui.jaturing_GUI import launch
 from tape import Tape
 from rule import Rule
 from state import State
+from file_io import FileIO
 
-_ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 
 class Jaturing:
@@ -20,6 +21,8 @@ class Jaturing:
 
         self.init_states()
         self.halted = False
+
+        self.io = FileIO(self)
 
     @property
     def states(self):
@@ -200,58 +203,58 @@ class Jaturing:
         """
         self.halted = False
 
-    def exportJSON(self):
-        """Create JSON string, which contains all the states, rules, tape
-        and current state of the machine
-        """
-        states_dict = {}
-        for state_name, state in self._states.items():
-            rules = state.get_rules_in_dictionary()
-            states_dict[state_name] = {"rules": rules}
+    # def exportJSON(self):
+    #     """Create JSON string, which contains all the states, rules, tape
+    #     and current state of the machine
+    #     """
+    #     states_dict = {}
+    #     for state_name, state in self._states.items():
+    #         rules = state.get_rules_in_dictionary()
+    #         states_dict[state_name] = {"rules": rules}
 
-        machine = {"alphabet": _ALPHABET,
-                   "start_state": self.start_state,
-                   "accept_state": self._accept_state,
-                   "reject_state": self._reject_state,
-                   "tape": self._tape.get_dictionary(),
-                   "states": states_dict}
+    #     machine = {"alphabet": _ALPHABET,
+    #                "start_state": self.start_state,
+    #                "accept_state": self._accept_state,
+    #                "reject_state": self._reject_state,
+    #                "tape": self._tape.get_dictionary(),
+    #                "states": states_dict}
 
-        return json.dumps(machine)
-
-
-    def importJSON(self, json_string):
-        """Read the given JSON string and build the machine from it
-
-        Args:
-            json_string : String containing all the states, rules and tape of
-                          the machine
-        """
-        self.init_states()
-        self.clear_tape()
-
-        import_dict = json.loads(json_string)
-
-        self._alphabet = import_dict["alphabet"]
-        self.start_state = import_dict["start_state"]
-        self.current_state = self.start_state
-        self._accept_state = import_dict["accept_state"]
-        self._reject_state = import_dict["reject_state"]
-
-        tape = import_dict["tape"]
-        self._tape.put_dictionary(tape)
-
-        states = import_dict["states"]
-
-        for state_name, rules_dict in states.items():
-            rules = rules_dict["rules"]
-            for character, rule in rules.items():
-                self.set_rule(state_name=state_name,
-                              character=character,
-                              write_char = rule["write_char"],
-                              direction = rule["direction"],
-                              next_state = rule["next_state"])
+    #     return json.dumps(machine)
 
 
+    # def importJSON(self, json_string):
+    #     """Read the given JSON string and build the machine from it
+
+    #     Args:
+    #         json_string : String containing all the states, rules and tape of
+    #                       the machine
+    #     """
+    #     self.init_states()
+    #     self.clear_tape()
+
+    #     import_dict = json.loads(json_string)
+
+    #     self._alphabet = import_dict["alphabet"]
+    #     self.start_state = import_dict["start_state"]
+    #     self.current_state = self.start_state
+    #     self._accept_state = import_dict["accept_state"]
+    #     self._reject_state = import_dict["reject_state"]
+
+    #     tape = import_dict["tape"]
+    #     self._tape.put_dictionary(tape)
+
+    #     states = import_dict["states"]
+
+    #     for state_name, rules_dict in states.items():
+    #         rules = rules_dict["rules"]
+    #         for character, rule in rules.items():
+    #             self.set_rule(state_name=state_name,
+    #                           character=character,
+    #                           write_char = rule["write_char"],
+    #                           direction = rule["direction"],
+    #                           next_state = rule["next_state"])
+
+        
 def main():
     argc = len(sys.argv)
     args = sys.argv[1:]

@@ -658,31 +658,32 @@ class JaturingFrame(ttk.Frame):
     def save_file(self):
         """Convert the current machine to a JSON string and save it to a file
         """
-        json_string = self.app.machine.exportJSON()
+        formats = self.app.machine.io.getFileformats()
 
-        f = filedialog.asksaveasfile(mode="w",
-                                     initialfile="Untitled.json",
-                                     defaultextension=".json",
-                                     filetypes=[("JSON files", "*.json"),
-                                                ("All files", "*.*")])
-                                                
-        if f is None:
+        filename = filedialog.asksaveasfilename(title="Save as",
+                                                initialfile="Untitled.json",
+                                                defaultextension=".json",
+                                                filetypes=formats)
+        
+        if not filename:
             return
 
-        f.write(json_string)
-        f.close()
+        self.app.machine.io.saveFile(filename)
+
         
     def load_file(self):
         """Load previously saved JSON formatted Turing's machine from a file
         """
-        f = filedialog.askopenfile(mode="r",
-                                   defaultextension=".json",
-                                   filetypes=[("JSON files", "*.json"),
-                                              ("All files", "*.*")])
-        json_string = f.read()
-        f.close()
+        formats = self.app.machine.io.getFileformats()
+        
+        filename = filedialog.askopenfilename(title="Load file",
+                                          defaultextension=".json",
+                                          filetypes=formats)
+                                   
+        if not filename:
+            return
 
-        self.app.machine.importJSON(json_string)
+        self.app.machine.io.loadFile(filename)
         self.app.refresh()
 
     def set_current_state(self, state_name):
