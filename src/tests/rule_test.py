@@ -1,6 +1,6 @@
 import unittest
 
-from jaturing import Rule
+from rule import Rule
 
 
 class TestRule(unittest.TestCase):

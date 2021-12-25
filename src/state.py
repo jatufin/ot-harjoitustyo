@@ -61,12 +61,12 @@ class State:
         Returns:
             Dictionary which can be used to produce JSON for the state
         """
-        dict = {}
+        return_dict = {}
         for character, rule in self._rules.items():
-            dict[character] = {"next_state": rule.next_state,
-                               "direction": rule.direction,
-                               "write_char": rule.write_char}
-        return dict
+            return_dict[character] = {"next_state": rule.next_state,
+                                      "direction": rule.direction,
+                                      "write_char": rule.write_char}
+        return return_dict
 
 
     @property

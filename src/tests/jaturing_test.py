@@ -22,13 +22,13 @@ class TestJaturing(unittest.TestCase):
     def test_clear_tape_clears_states(self):
         self.jaturing.clear_tape()
         self.assertEqual(str(self.jaturing._tape), "|>")
-    
+
     def test_default_accept_state_is_recognized(self):
         self.assertTrue(self.jaturing.is_accept_or_reject("ACCEPT"))
 
     def test_default_reject_state_is_recognized(self):
         self.assertTrue(self.jaturing.is_accept_or_reject("REJECT"))
-        
+
     def test_setting_rule_sets_rule(self):
         self.jaturing.add_state("q1")
         self.jaturing.set_rule(state_name="q1",
@@ -70,7 +70,7 @@ class TestJaturing(unittest.TestCase):
                                next_state="q2")
         self.jaturing.delete_state('q1')
         self.assertTrue("q1" not in self.jaturing._states)
-        
+
     def test_deleting_current_state_sets_current_state_to_none(self):
         self.jaturing.set_rule(state_name="q1",
                                character="a",
@@ -104,7 +104,7 @@ class TestJaturing(unittest.TestCase):
                                direction="RIGHT",
                                next_state="q2")
         self.jaturing.delete_rule('q1', 'a')
-        self.assertNotIn ("a", str(self.jaturing.get_state("q1").rules))
+        self.assertNotIn("a", str(self.jaturing.get_state("q1").rules))
 
     def test_deleteing_rule_for_nonexistent_state_deletes_nothing(self):
         self.jaturing.set_rule(state_name="q1",
@@ -142,7 +142,7 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.current_state = "q1"
         self.jaturing.tape.set_value(0, 'a')
         self.jaturing.step_forward()
-        self.jaturing.step_forward()        
+        self.jaturing.step_forward()
         self.assertTrue(self.jaturing.halted)
 
     def test_step_forward_to_reject_state_halts(self):
@@ -154,7 +154,7 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.current_state = "q1"
         self.jaturing.tape.set_value(0, 'a')
         self.jaturing.step_forward()
-        self.jaturing.step_forward()        
+        self.jaturing.step_forward()
         self.assertTrue(self.jaturing.halted)
 
     def test_step_forward_without_rule_halts(self):
@@ -166,7 +166,7 @@ class TestJaturing(unittest.TestCase):
         self.jaturing.current_state = "q1"
         self.jaturing.tape.set_value(0, 'b')
         self.jaturing.step_forward()
-        self.jaturing.step_forward()        
+        self.jaturing.step_forward()
         self.assertTrue(self.jaturing.halted)
 
     def test_step_forward_with_move_right_moves_right(self):
@@ -215,12 +215,11 @@ class TestJaturing(unittest.TestCase):
     def test_halt_halts(self):
         self.jaturing.halt()
         self.assertTrue(self.jaturing.halted)
-        
+
     def test_unhalt_unhalts(self):
         self.jaturing.halt()
         self.jaturing.unhalt()
-        self.assertFalse(self.jaturing.halted)        
+        self.assertFalse(self.jaturing.halted)
 
     def print_states_and_rules(self):
         self.assertTrue(True)
-

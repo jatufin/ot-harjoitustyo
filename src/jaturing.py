@@ -1,9 +1,7 @@
 import sys
-import json
 
 from ui.jaturing_GUI import launch
 from tape import Tape
-from rule import Rule
 from state import State
 from file_io import FileIO
 
@@ -25,12 +23,30 @@ class Jaturing:
         self.io = FileIO(self)
 
     @property
+    def alphabet(self):
+        """Alphabet of the machine
+
+        Returns:
+            String containing all the allowed characters
+        """
+        return self._alphabet
+
+    @alphabet.setter
+    def alphabet(self, alphabet):
+        """Set the alphabet used by the machine
+
+        Args:
+            alphabet : String containing all the allowed characters
+        """
+        self._alphabet = alphabet
+
+    @property
     def states(self):
         """ States of the Turing's machine
 
         Returns:
-            Dictionary, where state names are keys, and values are State objects
-        -------
+            Dictionary, where state names are keys, and values are
+            State objects
         """
         return self._states
 
@@ -42,6 +58,44 @@ class Jaturing:
              Tape object
         """
         return self._tape
+
+    @property
+    def accept_state(self):
+        """The accept state of the machine
+
+        Returns:
+            String identifier of the accept state
+        """
+        return self._accept_state
+
+    @accept_state.setter
+    def accept_state(self, accept_state):
+        """Change accept state of the machine
+
+        Args:
+            String identifier of the accept state
+        """
+        self._accept_state = accept_state
+
+
+    @property
+    def reject_state(self):
+        """The reject state of the machine
+
+        Returns:
+            String identifier of the reject state
+        """
+        return self._reject_state
+
+    @reject_state.setter
+    def reject_state(self, reject_state):
+        """Change reject state of the machine
+
+        Args:
+            String identifier of the reject state
+        """
+        self._reject_state = reject_state
+
 
     def init_states(self):
         """Initializes the machine states
@@ -67,10 +121,10 @@ class Jaturing:
         """
         self._states[name] = State()
 
-        if self.start_state == None:
+        if self.start_state is None:
             self.start_state = name
 
-        if self.current_state == None:
+        if self.current_state is None:
             self.current_state = name
 
     def delete_state(self, name):
@@ -81,9 +135,9 @@ class Jaturing:
         """
         if not name in self._states:
             return
-        if self.start_state == name:
+        if self.start_state is name:
             self.start_state = None
-        if self.current_state == name:
+        if self.current_state is name:
             self.current_state = None
         self.states.pop(name)
 
@@ -203,58 +257,7 @@ class Jaturing:
         """
         self.halted = False
 
-    # def exportJSON(self):
-    #     """Create JSON string, which contains all the states, rules, tape
-    #     and current state of the machine
-    #     """
-    #     states_dict = {}
-    #     for state_name, state in self._states.items():
-    #         rules = state.get_rules_in_dictionary()
-    #         states_dict[state_name] = {"rules": rules}
 
-    #     machine = {"alphabet": _ALPHABET,
-    #                "start_state": self.start_state,
-    #                "accept_state": self._accept_state,
-    #                "reject_state": self._reject_state,
-    #                "tape": self._tape.get_dictionary(),
-    #                "states": states_dict}
-
-    #     return json.dumps(machine)
-
-
-    # def importJSON(self, json_string):
-    #     """Read the given JSON string and build the machine from it
-
-    #     Args:
-    #         json_string : String containing all the states, rules and tape of
-    #                       the machine
-    #     """
-    #     self.init_states()
-    #     self.clear_tape()
-
-    #     import_dict = json.loads(json_string)
-
-    #     self._alphabet = import_dict["alphabet"]
-    #     self.start_state = import_dict["start_state"]
-    #     self.current_state = self.start_state
-    #     self._accept_state = import_dict["accept_state"]
-    #     self._reject_state = import_dict["reject_state"]
-
-    #     tape = import_dict["tape"]
-    #     self._tape.put_dictionary(tape)
-
-    #     states = import_dict["states"]
-
-    #     for state_name, rules_dict in states.items():
-    #         rules = rules_dict["rules"]
-    #         for character, rule in rules.items():
-    #             self.set_rule(state_name=state_name,
-    #                           character=character,
-    #                           write_char = rule["write_char"],
-    #                           direction = rule["direction"],
-    #                           next_state = rule["next_state"])
-
-        
 def main():
     argc = len(sys.argv)
     args = sys.argv[1:]
@@ -262,7 +265,7 @@ def main():
     jaturing = Jaturing()
 
     # If no args, start GUI application
-    if(argc == 1):
+    if argc == 1:
         launch(jaturing)
 
 if __name__ == "__main__":
