@@ -13,32 +13,20 @@ Kyseessä on yhden käyttäjän työpöytäsovellus, jonka voi asentaa ja suorit
 
 ## Käyttöliittymä
 
-### Graafinen käyttöliittymä
+Ohjelman graafinen käyttöliittymä avautuu, kun ohjelma käynnistetään. Käynnistys tapahtuu komennolla:
+
+```
+$ python3 jaturing.py
+```
 
 Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta asetusikkunasta. Toteutus tehdään Pythonin omalla TkInter-kirjastolla, mutta tilasiirtymäkaavion esityksessä voidaan käyttää kolmannen osapuolen graafi-kirjastoja.
 
-![Käyttöliittymäluonnos](jaturing_gui_draft.png)
+![Käyttöliittymä](jaturing_gui_draft.png)
 
-1. Nauha, jonka alapuolella luku- ja kirjoituspää / tehty
-2. Käyttäjän muokattavissa olevat tilasiirtymät / tehty
-3. Graafinen esitys tilasiirtymistä / tehty
-4. Ohjauspainikkeet / tehty
-
-### Komentorivikäyttöliittymä
-
-```$ python3 jaturing machinefile.json [inputstring | -i inputfile.tape] [--verbose | -v]```
-
-Komento suorittaa annetun ```machinefile.json``` Turingin koneen. Nauhan alkutilana toimii joko ```inputsring```-argumentti, tai ```inputfile```-tiedoston sisältö.
-
-Valinnalla ```--verbose``` tulostetaan riveittän jokainen tilasiirtymä, muussa tapauksessa ainoastaan nauhan tila koneen pysähtyessä tulostetaan.
-
-Tilan tulostus on muodossa ```m: s1s2s3>s4...sN (D s Q)```, jossa:
-* ```m``` on juokseva luku
-* ```sn``` tarkoittaa arvoa nauhan solussa ```n```
-* ```>``` näyttää lukupään sijaintia sen hetkisen kohdan vasemmalla puolella, 
-* ```D``` on viimeksi tehty siirron suunta: ```L=left, R=right, S=stay"```
-* ```s``` on viimeksi nauhalle kirjoitettu arvo
-* ```Q``` on tila (solmu) johon viimeksi siirryttiin
+1. Nauha, jossa korostettuna luku- ja kirjoituspää
+2. Käyttäjän muokattavissa olevat tilasiirtymät
+3. Graafinen esitys tilasiirtymistä
+4. Ohjauspainikkeet
 
 ## Perusversion toiminnallisuus
 
@@ -48,11 +36,10 @@ Perusversio tarjoaa yksinauhaisen Turing-koneen simulaattorin, joka konfiguroida
 
 ### Asetukset
 Asetuksista voidaan valita:
-* päättyykö suoritus, mikäli nauhan aloituspisteestä yritetään siirtyä vasemmalle
-* Onko käytössä ```S=stay```-operaatio, vai onko lukupäätä pakko liikuttaa
+* Voiko luku-kirjoituspää siirtyä nollakohdan vasemmalle puolelle, eli nauhan negatiivisiin indekseihin.
 
 ### Lataus ja tallennus
-* Voidaan tallentaa ja myöhemmin uudelleen ladata luotu Turingin-kone sen hetkisine tiloineen tiedostoon. Tiedostopäätteenä on ```tur```, ja tiedostomuoto JSON-muotoinen tekstitiedosto, jonka käsin muokkaaminen on mahdollista
+* Voidaan tallentaa ja myöhemmin uudelleen ladata luotu Turingin-kone sen hetkisine tiloineen tiedostoon. Tiedostopäätteenä on ```json```, ja tiedostomuoto JSON-muotoinen tekstitiedosto, jonka käsin muokkaaminen on mahdollista
 
 
 ## Jatkokehitysideoita

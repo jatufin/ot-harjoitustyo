@@ -1,7 +1,12 @@
 
 ### Käyttö
 
-![Kuvakaappaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/kuvakaappaus.png)
+![Käyttöliittymä](jaturing_gui.svg)
+
+1. Nauha, jossa korostettuna luku- ja kirjoituspää
+2. Käyttäjän muokattavissa olevat tilasiirtymät
+3. Graafinen esitys tilasiirtymistä
+4. Ohjauspainikkeet
 
 Ikkunan yläreunassa näkyy Turingin koneen nauha. Luku-kirjoituspään sijainti on korostettu punaisella.
 Jokaisessa solussa on yksi merkki, (mikäli tekstikenttään syöttää pidemmän merkijonon, vain ensimmäinen merkki huomioidaan). Nauhan päässä olevilla nuolipainikkeilla lukupäätä voi siirtää vasemmalle ja oikealle.
