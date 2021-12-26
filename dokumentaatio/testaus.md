@@ -12,7 +12,7 @@ Tallennusmuodot ja tiedostojenkäsittely on eriytetty omaksi ```FileIO```-luokak
 
 Yksikkötestauksen kattavuus on 97%:
 
-![Testikattavuus](coverage-report.png)
+![Testikattavuus](coverage_report.png)
 
 Käyttöliittymä on jätetty yksikkötestauksen ulkopuolelle.
 
