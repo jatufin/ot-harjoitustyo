@@ -21,7 +21,7 @@ $ python3 jaturing.py
 
 Graafinen käyttöliittymä koostuu pääikkunasta, ja erikseen avattavasta asetusikkunasta. Toteutus tehdään Pythonin omalla TkInter-kirjastolla, mutta tilasiirtymäkaavion esityksessä voidaan käyttää kolmannen osapuolen graafi-kirjastoja.
 
-![Käyttöliittymä](jaturing_gui_draft.png)
+![Käyttöliittymä](jaturing_gui.png)
 
 1. Nauha, jossa korostettuna luku- ja kirjoituspää
 2. Käyttäjän muokattavissa olevat tilasiirtymät

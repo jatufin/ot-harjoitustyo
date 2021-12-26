@@ -1,7 +1,7 @@
 
 ### Käyttö
 
-![Käyttöliittymä](jaturing_gui.svg)
+![Käyttöliittymä](jaturing_gui.png)
 
 1. Nauha, jossa korostettuna luku- ja kirjoituspää
 2. Käyttäjän muokattavissa olevat tilasiirtymät
