@@ -11,7 +11,7 @@ Sovellus toimii opiskelun apuna simuloimalla Turingin koneen toimintaa. Käyttä
 ## Käyttäjät
 Kyseessä on yhden käyttäjän työpöytäsovellus, jonka voi asentaa ja suorittaa tavallisen käyttäjän oikeuksilla, jos tietokoneella on Python 3 asennettuna.
 
-## Käyttöliittymä
+## Ohjelman käynnistys ja käyttöliittymä
 
 Ohjelman graafinen käyttöliittymä avautuu, kun ohjelma käynnistetään. Käynnistys tapahtuu komennolla:
 

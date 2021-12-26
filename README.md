@@ -9,11 +9,7 @@ Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, j
 * Graafinen käyttöliittymä toimii
 * Koneen tilan tallennus ja lataus tiedostoon toimivat
 * Tiloja ja niiden välisiä siirtymiä esittävä graafi on upotettu ulkopuolista kirjastoa käyttäen käyttöliittymään
-* Yksikkötestaus on lähes kattava
-
-### Puuttuva toiminnallisuus
-* Komentoriviargumenttien käsittelyä ei ole toteutettu
-* Käyttöliittymä on vielä hiomaton, eikä graafi ole täysin tyydyttävä
+* Yksikkötestaus on kattava
 
 ### Dokumentaatio
 [Käyttöohje](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/kaytto-ohje.md)
@@ -24,7 +20,9 @@ Sovelluksen avulla käyttäjä pystyy luomaan yksinkertaisia Turingin-koneita, j
 
 [Arkkitehtuuri](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 
-[Julkaisu (releaset)](https://github.com/jatufin/ot-harjoitustyo/releases/tag/viikko6)
+[Testaus](https://github.com/jatufin/ot-harjoitustyo/blob/master/dokumentaatio/testaus.md)
+
+[Julkaisu (releaset)](https://github.com/jatufin/ot-harjoitustyo/releases/tag/loppupalautus)
 
 ### Asennus ja käyttö
 

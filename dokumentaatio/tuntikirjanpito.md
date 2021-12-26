@@ -11,5 +11,8 @@
 | 08.12. | 3    | JSON export ja import, lataus ja tallennus. GUI-korjauksia |
 | 09.12. | 3    | Bugien korjausta, käyttöliittymän ja ominaisuuksien hiomista |
 | 14.12. | 16   | Graafin toteuttaminen NetworkX-kirjastolla, bugien korjausta |
+| 25.12. | 3   | Refaktoroitiin IO erilliseen luokkaan |
+| 26.12. | 2   | Päivitettiin dokumentaatio |
 
-Tunteja yhteensä: 57
+
+Tunteja yhteensä: 63
