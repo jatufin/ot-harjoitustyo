@@ -39,7 +39,8 @@ class JaturingFrame(ttk.Frame):
 
             self.step_forward_button = ttk.Button(self,
                                                   text="Step Forward",
-                                                  command=root_frame.step_forward)
+                                                  command=root_frame.step_forward,
+                                                  style="Forward.TButton")
 
             self.new_state_button = ttk.Button(self,
                                                text="Add state",
@@ -220,9 +221,9 @@ class JaturingFrame(ttk.Frame):
                                   style="Tape.TLabel",
                                   textvariable=index)
                 entry = ttk.Entry(self,
-                                  style="Tape.TEntry",
                                   width=2,
-                                  textvariable=value)
+                                  textvariable=value,
+                                  font=("Courier", 14, "bold"))
                 label.grid(row=0, column=i+1)
                 entry.grid(row=1, column=i+1)
 
@@ -276,10 +277,14 @@ class JaturingFrame(ttk.Frame):
             """
             tape_index = int(self.indexes[index].get())
             value_string = self.values[index].get()
-
+            
             if len(value_string) == 0:
-                return
-            first_character = value_string[0]
+                first_character = "."
+            else:
+                first_character = value_string[0]
+                
+            self.values[index].set(first_character)  # Drop rest of the string
+            
             if first_character == self.machine.tape._get_value(tape_index):
                 return
 

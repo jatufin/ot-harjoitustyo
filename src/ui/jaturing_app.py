@@ -23,20 +23,28 @@ class JaturingApp(Tk):
         self.root = JaturingFrame(self)
         
     def set_style(self):
-        background_color = "#ddddff"
+        background_color = "white"
         foreground_color = "#000000"
         self.configure(background = background_color)
 
         self.style = ttk.Style()
-        self.style.configure("TFrame", background = background_color)
-        self.style.configure("TButton", background = background_color)
-        self.style.configure("TLabel", background = background_color,
+        self.style.configure("TFrame", background=background_color)
+        self.style.configure("TButton", background=background_color,
+                             font=("Helvetica", 11, "bold"))
+        self.style.configure("Forward.TButton", background="#aaffaa",
+                             font=("Helvetica", 11, "bold"))
+        self.style.configure("TLabel", background=background_color,
                              font = ("Arial",11))
-        self.style.configure("Tape.TLabel", background = background_color, foreground = foreground_color,
-                             width=3, justify = "center", font = ("Helvetica", 10))
+        self.style.configure("Tape.TLabel",
+                             background=background_color,
+                             foreground=foreground_color,
+                             width=3,
+                             justify="center",
+                             font=("Helvetica", 16))
         self.style.configure("TapeHead.TLabel",
-                             width=3, justify = "center", font = ("Helvetica", 12, "bold"), background = "red")
-        self.style.configure("Tape.TEntry", justify = "center", font = ("Helvetica", 24))
-        self.style.configure("Rule.TEntry", justify = "center", font = ("Helvetica", 24))
+                             width=3,
+                             justify="center",
+                             font=("Helvetica", 16, "bold"),
+                             background="red")
 
 

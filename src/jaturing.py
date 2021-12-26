@@ -5,7 +5,7 @@ from tape import Tape
 from state import State
 from file_io import FileIO
 
-_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890."
 
 
 class Jaturing:
